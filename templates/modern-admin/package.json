@@ -1,0 +1,9 @@
+{
+  "name": "@design-templates/modern-admin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "typecheck": "tsc --noEmit", "test": "vitest run --config ../../apps/showcase/vite.config.ts src/modern-admin.test.tsx" },
+  "dependencies": { "@design-templates/ui": "workspace:*", "@design-templates/utilities": "workspace:*", "lucide-react": "^0.468.0", "motion": "^12.23.24", "react": "^19.1.1", "react-dom": "^19.1.1" },
+  "devDependencies": { "@testing-library/jest-dom": "^6.9.1", "@testing-library/react": "^16.3.0", "@testing-library/user-event": "^14.6.1", "@types/react": "^19.1.16", "@types/react-dom": "^19.1.9", "typescript": "^5.9.3", "vitest": "^3.2.4" }
+}

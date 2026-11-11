@@ -1,0 +1,16 @@
+{
+  "name": "design-templates",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@12.15.0",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "pnpm --filter @design-templates/showcase dev",
+    "build": "pnpm registry:build && pnpm --filter @design-templates/showcase build",
+    "typecheck": "pnpm --filter @design-templates/showcase typecheck && pnpm --filter @design-templates/modern-admin typecheck",
+    "test": "pnpm registry:check && pnpm --filter @design-templates/showcase test",
+    "test:e2e": "pnpm --filter @design-templates/showcase test:e2e",
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:check": "node scripts/build-registry.mjs --check"
+  }
+}

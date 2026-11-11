@@ -1,0 +1,8 @@
+[
+  { "id": "admin-cms", "name": "Admin & CMS", "description": "Operations dashboards and content management." },
+  { "id": "e-commerce", "name": "E-Commerce", "description": "Online storefronts and commerce operations." },
+  { "id": "portfolio-profile", "name": "Portfolio & Profile", "description": "Personal portfolios and profile pages." },
+  { "id": "landing-page", "name": "Landing Page", "description": "Product and campaign landing pages." },
+  { "id": "project-management", "name": "Project Management", "description": "Planning, task, and team workspaces." },
+  { "id": "blog-publishing", "name": "Blog & Publishing", "description": "Editorial and publishing experiences." }
+]

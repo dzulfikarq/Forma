@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "generatedFrom": "templates/*/template.json",
+  "distribution": {
+    "repository": "https://github.com/dzulfikarq/design-templates",
+    "ref": null,
+    "immutable": false
+  },
+  "categories": [
+    {
+      "id": "admin-cms",
+      "name": "Admin & CMS",
+      "description": "Operations dashboards and content management."
+    },
+    {
+      "id": "blog-publishing",
+      "name": "Blog & Publishing",
+      "description": "Editorial and publishing experiences."
+    },
+    {
+      "id": "e-commerce",
+      "name": "E-Commerce",
+      "description": "Online storefronts and commerce operations."
+    },
+    {
+      "id": "landing-page",
+      "name": "Landing Page",
+      "description": "Product and campaign landing pages."
+    },
+    {
+      "id": "portfolio-profile",
+      "name": "Portfolio & Profile",
+      "description": "Personal portfolios and profile pages."
+    },
+    {
+      "id": "project-management",
+      "name": "Project Management",
+      "description": "Planning, task, and team workspaces."
+    }
+  ],
+  "templates": [
+    {
+      "id": "modern-admin",
+      "name": "Modern Admin",
+      "description": "A charcoal operations workspace with live sales insights, order lanes, and a focused settings area.",
+      "tags": [
+        "dashboard",
+        "analytics",
+        "orders",
+        "dark",
+        "operations"
+      ],
+      "version": "1.0.0",
+      "entry": "templates/modern-admin/src/entry.tsx",
+      "design": "templates/modern-admin/design.md",
+      "compatibility": [
+        {
+          "framework": "React + Vite",
+          "status": "tested"
+        }
+      ],
+      "variants": [
+        {
+          "id": "ember",
+          "name": "Ember",
+          "accent": "24 95% 53%",
+          "default": true
+        },
+        {
+          "id": "violet",
+          "name": "Violet",
+          "accent": "263 83% 62%",
+          "default": false
+        }
+      ],
+      "dependencies": [
+        "react",
+        "@design-templates/ui",
+        "@design-templates/utilities",
+        "lucide-react",
+        "motion"
+      ],
+      "license": {
+        "type": "MIT",
+        "attribution": "Original implementation; no third-party template code or imagery."
+      },
+      "tests": [
+        "templates/modern-admin/src/modern-admin.test.tsx"
+      ],
+      "category": "admin-cms",
+      "preview": "/previews/modern-admin.svg",
+      "previewSource": "templates/modern-admin/preview.svg",
+      "source": "templates/modern-admin"
+    }
+  ]
+}
