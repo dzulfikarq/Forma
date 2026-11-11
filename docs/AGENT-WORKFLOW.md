@@ -60,6 +60,6 @@ pnpm template:install -- --id modern-admin --package dist/exports/modern-admin `
   --framework react-vite --target <new-project-directory> --variant ember --dry-run
 ```
 
-Remove `--dry-run` to install. Choose `next-app-router` only when package metadata marks it `tested`. `--experimental` permits an explicit untested proof build and prints a warning; it is not a compatibility claim. Targets must not exist and parent directory must be a real directory. Run `pnpm install`, `pnpm typecheck`, and `pnpm build` in installed project. Installer never merges existing workspaces. GitHub fetching is deferred until an authenticated immutable-ref contract exists; never put credentials in package files or URLs.
+Remove `--dry-run` to install. Choose an adapter only when package metadata marks it `tested`. `--experimental` permits an explicit untested proof build and prints a warning; it is not a compatibility claim. Targets must not exist and parent directory must be a real directory. Run `pnpm install`, `pnpm typecheck`, and `pnpm build` in installed project. Installer never merges existing workspaces. GitHub fetching remains unimplemented; any future work must follow [`DISTRIBUTION.md`](DISTRIBUTION.md), and credentials must never enter package files or URLs.
 
 Release registry refs must be immutable semver tags or full commit SHAs. CI validates only; no release/publish automation. Repository is private; do not publish externally without explicit visibility approval. Do not modify Project Generator.
