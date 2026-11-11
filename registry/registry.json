@@ -171,7 +171,11 @@
       "compatibility": [
         {
           "framework": "React + Vite",
-          "status": "untested"
+          "status": "tested"
+        },
+        {
+          "framework": "Next.js App Router",
+          "status": "tested"
         }
       ],
       "variants": [

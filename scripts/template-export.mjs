@@ -10,6 +10,10 @@ export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const stableId = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const internalPackages = new Set(["@design-templates/ui", "@design-templates/utilities", "@design-templates/tokens"]);
 const nonRegistryDependency = /^(?:workspace:|file:|link:|portal:|git(?:\+|:)|github:|https?:|npm:|catalog:)/i;
+const semverPart = "(?:\\^|~|>=?|<=?|=)?\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?";
+const registryRange = new RegExp(`^${semverPart}(?:\\s*\\|\\|\\s*${semverPart})*$`);
+const forbiddenWindowsSegment = /[<>:"|?*]|[. ]$/;
+const reservedWindowsSegment = /^(?:con|prn|aux|nul|conin\$|conout\$|com[1-9¹²³]|lpt[1-9¹²³])(?:\..*)?$/i;
 
 const sharedBuildDependencies = {
   autoprefixer: "^10.4.21",
@@ -37,13 +41,13 @@ function digest(bytes) {
   return createHash("sha256").update(bytes).digest("hex");
 }
 
-function portablePath(value) {
+export function isPortablePackagePath(value) {
   if (typeof value !== "string" || !value || value.includes("\\") || value.includes("\0") || path.posix.isAbsolute(value)) return false;
-  return value.split("/").every((part) => part && part !== "." && part !== "..");
+  return value.split("/").every((part) => part && part !== "." && part !== ".." && !forbiddenWindowsSegment.test(part) && !reservedWindowsSegment.test(part));
 }
 
 function pathInside(base, relative) {
-  if (!portablePath(relative)) throw new Error(`Unsafe package path: ${relative}`);
+  if (!isPortablePackagePath(relative)) throw new Error(`Unsafe package path: ${relative}`);
   const absolute = path.resolve(base, ...relative.split("/"));
   const escaped = path.relative(base, absolute);
   if (escaped.startsWith("..") || path.isAbsolute(escaped)) throw new Error(`Package path escapes root: ${relative}`);
@@ -85,7 +89,7 @@ function rewriteImports(source, outputPath) {
 
 function addDependency(target, name, specifier, origin) {
   if (internalPackages.has(name)) return;
-  if (typeof specifier !== "string" || !specifier || nonRegistryDependency.test(specifier)) {
+  if (typeof specifier !== "string" || !registryRange.test(specifier) || nonRegistryDependency.test(specifier)) {
     throw new Error(`${origin} has non-portable dependency ${name}@${specifier}.`);
   }
   if (target[name] && target[name] !== specifier) throw new Error(`Conflicting ranges for ${name}: ${target[name]} and ${specifier}.`);
@@ -238,6 +242,7 @@ export async function validatePortablePackage(packageDirectory) {
   const packageRoot = await realpath(path.resolve(packageDirectory));
   const manifest = JSON.parse(await readFile(path.join(packageRoot, "forma.install.json"), "utf8"));
   if (manifest.format !== FORMAT || manifest.formatVersion !== FORMAT_VERSION) throw new Error("Unsupported Forma package format.");
+  if (manifest.integrity?.algorithm !== "sha256" || !/^[a-f0-9]{64}$/i.test(manifest.integrity?.contentHash ?? "")) throw new Error("Portable package must declare SHA-256 payload integrity.");
   if (!stableId.test(manifest.template?.id ?? "") || typeof manifest.template.version !== "string") throw new Error("Portable package has invalid template identity.");
   if (!Array.isArray(manifest.files) || !manifest.files.length) throw new Error("Portable package has no file manifest.");
   if (!Array.isArray(manifest.template.variants) || !manifest.template.variants.length || !Array.isArray(manifest.template.compatibility) || !Array.isArray(manifest.styles?.template) || typeof manifest.styles.shared !== "string") {
@@ -248,7 +253,7 @@ export async function validatePortablePackage(packageDirectory) {
   const hashes = [];
   const payload = new Map();
   for (const record of manifest.files) {
-    if (!portablePath(record.path) || seen.has(record.path) || !/^[a-f0-9]{64}$/.test(record.sha256 ?? "")) throw new Error(`Invalid or duplicate payload record: ${record.path}`);
+    if (!isPortablePackagePath(record.path) || seen.has(record.path) || !/^[a-f0-9]{64}$/.test(record.sha256 ?? "")) throw new Error(`Invalid or duplicate payload record: ${record.path}`);
     seen.add(record.path);
     const absolute = pathInside(packageRoot, record.path);
     let cursor = packageRoot;
@@ -274,13 +279,27 @@ export async function validatePortablePackage(packageDirectory) {
     if (!file.endsWith(".css") || !seen.has(file)) throw new Error(`Portable package references missing CSS file: ${file}`);
   }
   const packageManifest = JSON.parse(payload.get("package.json").toString("utf8"));
-  for (const [name, specifier] of Object.entries({ ...packageManifest.dependencies, ...packageManifest.devDependencies })) {
-    if (!specifier || nonRegistryDependency.test(specifier)) throw new Error(`Non-portable package dependency: ${name}@${specifier}`);
+  const isRecord = (value) => Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  if (!isRecord(packageManifest.dependencies) || !isRecord(packageManifest.devDependencies) || !isRecord(manifest.dependencies?.runtime) || !isRecord(manifest.dependencies?.sharedBuild) || !isRecord(manifest.dependencies?.adapters)) {
+    throw new Error("Portable package dependency manifest is invalid.");
+  }
+  const canonical = (value) => {
+    if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
+    if (value && typeof value === "object") return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(",")}}`;
+    return JSON.stringify(value);
+  };
+  if (canonical(packageManifest.dependencies) !== canonical(manifest.dependencies.runtime) || canonical(packageManifest.devDependencies) !== canonical(manifest.dependencies.sharedBuild)) {
+    throw new Error("Portable package dependency manifest mismatch.");
+  }
+  if (canonical(manifest.dependencies.adapters) !== canonical(adapterDependencies)) throw new Error("Portable package adapter dependency manifest mismatch.");
+  for (const [name, specifier] of Object.entries({ ...packageManifest.dependencies, ...packageManifest.devDependencies, ...manifest.dependencies.adapters["react-vite"].devDependencies, ...manifest.dependencies.adapters["next-app-router"].dependencies, ...manifest.dependencies.adapters["next-app-router"].devDependencies })) {
+    if (!registryRange.test(specifier ?? "") || nonRegistryDependency.test(specifier)) throw new Error(`Non-registry package dependency: ${name}@${specifier}`);
   }
   const portableMetadata = JSON.parse(payload.get("template.json").toString("utf8"));
   for (const key of ["id", "name", "version", "category", "license", "variants", "compatibility", "entry", "design"]) {
     if (JSON.stringify(portableMetadata[key]) !== JSON.stringify(manifest.template[key])) throw new Error(`Portable package metadata mismatch: ${key}`);
   }
+  if (canonical(portableMetadata.dependencies) !== canonical(Object.keys(packageManifest.dependencies).sort())) throw new Error("Portable template dependency list mismatch.");
   return { root: packageRoot, manifest, manifestBytes: await readFile(path.join(packageRoot, "forma.install.json")), payload, packageManifest };
 }
 

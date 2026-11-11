@@ -1,7 +1,7 @@
-import { access, lstat, mkdir, mkdtemp, readFile, readdir, rename, rm, writeFile } from "node:fs/promises";
+import { lstat, mkdir, mkdtemp, readdir, rename, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { adapterDependencies, validatePortablePackage } from "./template-export.mjs";
+import { adapterDependencies, isPortablePackagePath, validatePortablePackage } from "./template-export.mjs";
 
 function modulePath(fromFile, targetFile) {
   let value = path.posix.relative(path.posix.dirname(fromFile), targetFile);
@@ -11,7 +11,7 @@ function modulePath(fromFile, targetFile) {
 }
 
 function safePath(base, relative) {
-  if (typeof relative !== "string" || !relative || relative.includes("\\") || relative.includes("\0") || path.posix.isAbsolute(relative) || relative.split("/").some((part) => !part || part === "." || part === "..")) {
+  if (!isPortablePackagePath(relative)) {
     throw new Error(`Unsafe installation path: ${relative}`);
   }
   const absolute = path.resolve(base, ...relative.split("/"));

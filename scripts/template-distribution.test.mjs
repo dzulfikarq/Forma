@@ -17,8 +17,9 @@ function sha256(value) {
 test("portable export vendors dependencies and stays workspace-independent across templates", async (t) => {
   const modern = await buildPortablePackage("modern-admin");
   const focus = await buildPortablePackage("focus-planner");
+  const staywise = await buildPortablePackage("staywise-host-dashboard");
 
-  for (const bundle of [modern, focus]) {
+  for (const bundle of [modern, focus, staywise]) {
     assert.ok(bundle.payload.has("src/template/entry.tsx"));
     assert.ok(bundle.payload.has("src/forma/ui.tsx"));
     assert.ok(bundle.payload.has("src/forma/theme.tsx"));
@@ -36,6 +37,7 @@ test("portable export vendors dependencies and stays workspace-independent acros
   }
   assert.equal(modern.manifest.template.id, "modern-admin");
   assert.equal(focus.manifest.template.id, "focus-planner");
+  assert.equal(staywise.manifest.template.id, "staywise-host-dashboard");
 });
 
 test("export verifies payload hashes and rejects unsafe manifest paths", async (t) => {
@@ -48,10 +50,45 @@ test("export verifies payload hashes and rejects unsafe manifest paths", async (
   assert.ok(bundle.manifest.source.ref === null || /^[a-f0-9]{40,64}$/i.test(bundle.manifest.source.ref));
 
   const manifestPath = path.join(output, "forma.install.json");
-  const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
-  manifest.files[0].path = "../outside.txt";
-  await writeFile(manifestPath, JSON.stringify(manifest));
-  await assert.rejects(validatePortablePackage(output), /Invalid or duplicate payload record|Unsafe package path/);
+  const originalManifest = JSON.parse(await readFile(manifestPath, "utf8"));
+  for (const unsafePath of ["../outside.txt", "C:/outside.txt", "CON.txt", "conin$.log", "LPT³", "folder/trailing. "]) {
+    const manifest = structuredClone(originalManifest);
+    manifest.files[0].path = unsafePath;
+    await writeFile(manifestPath, JSON.stringify(manifest));
+    await assert.rejects(validatePortablePackage(output), /Invalid or duplicate payload record/);
+  }
+  const alteredAlgorithm = structuredClone(originalManifest);
+  alteredAlgorithm.integrity.algorithm = "sha1";
+  await writeFile(manifestPath, JSON.stringify(alteredAlgorithm));
+  await assert.rejects(validatePortablePackage(output), /must declare SHA-256/);
+
+  const alteredDependencies = structuredClone(originalManifest);
+  alteredDependencies.dependencies.runtime.react = "file:../react";
+  await writeFile(manifestPath, JSON.stringify(alteredDependencies));
+  await assert.rejects(validatePortablePackage(output), /dependency manifest mismatch/);
+
+  const packageManifestPath = path.join(output, "package.json");
+  const originalPackageManifest = await readFile(packageManifestPath);
+  const invalidPackageManifest = JSON.parse(originalPackageManifest.toString("utf8"));
+  invalidPackageManifest.dependencies["lucide-react"] = "file:../lucide-react";
+  const invalidPackageBytes = `${JSON.stringify(invalidPackageManifest, null, 2)}\n`;
+  const invalidDependencyManifest = structuredClone(originalManifest);
+  invalidDependencyManifest.dependencies.runtime["lucide-react"] = "file:../lucide-react";
+  invalidDependencyManifest.files.find((record) => record.path === "package.json").sha256 = sha256(invalidPackageBytes);
+  invalidDependencyManifest.integrity.contentHash = sha256(invalidDependencyManifest.files.map((record) => `${record.path}\0${record.sha256}\n`).sort().join(""));
+  await writeFile(packageManifestPath, invalidPackageBytes);
+  await writeFile(manifestPath, JSON.stringify(invalidDependencyManifest));
+  await assert.rejects(validatePortablePackage(output), /Non-registry package dependency/);
+
+  await writeFile(packageManifestPath, originalPackageManifest);
+  await writeFile(manifestPath, JSON.stringify(originalManifest));
+
+  const sourcePath = path.join(output, "src/forma/utilities.ts");
+  const originalSource = await readFile(sourcePath);
+  await writeFile(sourcePath, `${originalSource.toString("utf8")}\n// tampered`);
+  await assert.rejects(validatePortablePackage(output), /Package integrity mismatch/);
+  await writeFile(sourcePath, originalSource);
+  await validatePortablePackage(output);
 });
 
 test("installer dry-run, theme selection, compatibility gate, and conflict refusal", async (t) => {
@@ -82,6 +119,13 @@ test("installer dry-run, theme selection, compatibility gate, and conflict refus
   manifest.integrity.contentHash = sha256(manifest.files.map((record) => `${record.path}\0${record.sha256}\n`).sort().join(""));
   await writeFile(unmarkedManifestPath, JSON.stringify(manifest));
   await assert.rejects(installPortableTemplate({ id: "modern-admin", packageDir: unmarkedPackage, framework: "next-app-router", target, variant: "ember", dryRun: true }), /not marked tested/);
+
+  const staywisePackage = path.join(temp, "staywise-package");
+  await createPortablePackage({ id: "staywise-host-dashboard", outDir: staywisePackage, repositoryRoot: root });
+  for (const framework of ["react-vite", "next-app-router"]) {
+    const tested = await installPortableTemplate({ id: "staywise-host-dashboard", packageDir: staywisePackage, framework, target, dryRun: true });
+    assert.equal(tested.framework.compatibility, "tested");
+  }
 
   await mkdir(target);
   await writeFile(path.join(target, "keep.txt"), "existing data");
