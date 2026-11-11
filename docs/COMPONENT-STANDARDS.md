@@ -14,7 +14,14 @@ Import reusable controls from `@design-templates/ui`: Button/loading, Input, Tex
 
 ## Tokens and typography
 
-Use semantic colors, not fixed light/dark palette values, for shared controls. `--accent` drives primary/accent surfaces. Default sizes: page 22px, section 18px, card 16px, body/button/input 14px, table 13–14px, label 13px, helper/badge 12px, KPI 24–28px. Landing page hero type may scale up. Don’t shrink text to solve narrow layouts; reflow/wrap first.
+Use semantic colors, not fixed light/dark palette values, for shared controls. `--accent` drives primary/accent surfaces. Use Plus Jakarta Sans via `--font-family-sans` with the system sans fallback. Global type and line-height tokens live in `packages/tokens/src/styles.css`; Tailwind utilities map to the same tokens.
+
+- Hero: 40–48px desktop, responsive on mobile.
+- Page/section: 24px / 22px; card title: 18px.
+- Body/description: 14–16px (15px default); navigation, buttons, and inputs: 14px.
+- Category tabs and labels: 13px; badges and helper/footer: 12–13px.
+- UI text must not fall below 12px. Use shared size/line-height tokens instead of one-off values; reflow or wrap narrow layouts instead of shrinking text.
+- Plus Jakarta Sans is distributed under SIL Open Font License 1.1; fallback remains available when Google Fonts cannot load.
 
 ## States and behavior
 

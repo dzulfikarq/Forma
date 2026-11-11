@@ -4,7 +4,21 @@ Detailed requirements: [component standards](docs/COMPONENT-STANDARDS.md). Token
 
 ## Typography
 
-Default font system sans. Compact defaults: page title 22px, section title 18px, card title 16px, body/button/input 14px, table 13–14px, label 13px, helper/badge 12px, KPI 24–28px. Token utilities live in `apps/showcase/tailwind.config.js`. Landing hero may exceed scale. Fix narrow layouts with wrapping/responsive layout before reducing type.
+Use Plus Jakarta Sans, served by Google Fonts under SIL Open Font License 1.1, with the system sans stack as fallback. Shared size and line-height tokens live in `packages/tokens/src/styles.css`; Tailwind utilities map to those tokens in `apps/showcase/tailwind.config.js`.
+
+| Role | Token | Size |
+| --- | --- | --- |
+| Desktop hero | `--font-size-hero` | 40–48px; responsive on mobile |
+| Page heading | `--font-size-page` | 24px |
+| Section heading | `--font-size-section` | 22px |
+| Card title | `--font-size-card` | 18px |
+| Body and card description | `--font-size-body` | 15px |
+| Navigation | `--font-size-nav` | 14px |
+| Button and input | `--font-size-button`, `--font-size-input` | 14px |
+| Category and label | `--font-size-category`, `--font-size-label` | 13px |
+| Badge and helper/footer | `--font-size-badge`, `--font-size-helper` | 12px |
+
+Keep UI text at 12px or larger. Pair display text with `--line-height-display`, headings with `--line-height-heading`, and body copy with `--line-height-body`. Prefer the semantic tokens over literal sizes; fix narrow layouts with wrapping and responsive layout before reducing type.
 
 ## Tokens
 
