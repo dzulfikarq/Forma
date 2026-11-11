@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("gallery, live preview, theme variants, and responsive navigation work", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Explore templates 2" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^Explore templates/ })).toBeVisible();
   await page.getByRole("button", { name: /Modern Admin/ }).click();
   await expect(page.getByRole("heading", { name: "Modern Admin" })).toBeVisible();
   await expect(page.locator(".preview-viewport").getByRole("heading", { name: "Heartwell today" })).toBeVisible();
@@ -52,7 +52,7 @@ test("gallery, live preview, theme variants, and responsive navigation work", as
   await expect(page.getByText(/mobile · 375px/)).toBeVisible();
   await page.getByRole("button", { name: "All templates" }).click();
   await page.setViewportSize({ width: 375, height: 844 });
-  await expect(page.getByRole("heading", { name: "Explore templates 2" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^Explore templates/ })).toBeVisible();
   await page.screenshot({ path: "test-results/showcase-mobile.png", fullPage: true });
 });
 

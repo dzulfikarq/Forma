@@ -150,6 +150,58 @@
       "previewMobile": "/previews/modern-admin-mobile.png",
       "previewMobileSource": "templates/modern-admin/previews/preview-mobile.png",
       "source": "templates/modern-admin"
+    },
+    {
+      "id": "staywise-host-dashboard",
+      "name": "Staywise Host Dashboard",
+      "description": "A responsive short-term rental workspace for bookings, properties, rates, pricing, and host support.",
+      "tags": [
+        "staywise",
+        "host",
+        "dashboard"
+      ],
+      "version": "0.1.0",
+      "entry": "templates/staywise-host-dashboard/src/entry.tsx",
+      "previewGeneration": "playwright",
+      "design": "templates/staywise-host-dashboard/design.md",
+      "compatibility": [
+        {
+          "framework": "React + Vite",
+          "status": "tested"
+        }
+      ],
+      "variants": [
+        {
+          "id": "lagoon",
+          "name": "Lagoon",
+          "accent": "174 58% 34%",
+          "default": true
+        },
+        {
+          "id": "coral",
+          "name": "Coral",
+          "accent": "12 68% 46%",
+          "default": false
+        }
+      ],
+      "dependencies": [
+        "react",
+        "@design-templates/ui",
+        "lucide-react"
+      ],
+      "license": {
+        "type": "MIT",
+        "attribution": "Original implementation inspired by the user-supplied PinHome reference (MIT, copyright LALUARIFTA 2026). No reference code, screenshots, or third-party imagery copied."
+      },
+      "tests": [
+        "templates/staywise-host-dashboard/src/staywise-host-dashboard.test.tsx"
+      ],
+      "category": "admin-cms",
+      "preview": "/previews/staywise-host-dashboard.png",
+      "previewSource": "templates/staywise-host-dashboard/previews/preview.png",
+      "previewMobile": "/previews/staywise-host-dashboard-mobile.png",
+      "previewMobileSource": "templates/staywise-host-dashboard/previews/preview-mobile.png",
+      "source": "templates/staywise-host-dashboard"
     }
   ]
 }

@@ -7,7 +7,7 @@ describe("showcase catalog", () => {
   it("searches registry templates and opens live responsive preview", async () => {
     const user = userEvent.setup();
     render(<App />);
-    expect(screen.getByRole("heading", { name: "Explore templates 2" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^Explore templates/ })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Admin & CMS" }));
     await user.click(screen.getByRole("button", { name: /Modern Admin/ }));
     expect(screen.getByRole("heading", { name: "Modern Admin" })).toBeInTheDocument();

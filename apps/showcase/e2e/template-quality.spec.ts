@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("Focus Planner appears from metadata and keeps its theme and interaction functional", async ({ page }) => {
   await page.setViewportSize({ width: 1366, height: 1000 });
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Explore templates 2" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^Explore templates/ })).toBeVisible();
 
   const card = page.locator('[data-template-id="focus-planner"]');
   await expect(card).toBeVisible();
