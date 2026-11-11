@@ -8,11 +8,14 @@
     "dev": "pnpm --filter @design-templates/showcase dev",
     "build": "pnpm registry:build && pnpm --filter @design-templates/showcase build",
     "typecheck": "pnpm -r --if-present typecheck",
-    "test": "pnpm registry:check && pnpm --filter @design-templates/showcase test",
+    "test": "pnpm registry:check && pnpm --filter @design-templates/showcase test && pnpm test:distribution",
     "test:e2e": "pnpm --filter @design-templates/showcase test:e2e",
     "lint": "node scripts/lint.mjs",
     "template:new": "node scripts/template-new.mjs",
+    "template:export": "node scripts/template-export.mjs",
+    "template:install": "node scripts/template-install.mjs",
     "template:preview": "node apps/showcase/scripts/generate-preview.mjs",
+    "test:distribution": "node --test scripts/template-distribution.test.mjs",
     "registry:build": "node scripts/build-registry.mjs",
     "registry:check": "node scripts/build-registry.mjs --check"
   }
