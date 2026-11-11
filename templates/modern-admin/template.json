@@ -20,6 +20,10 @@
     {
       "framework": "React + Vite",
       "status": "tested"
+    },
+    {
+      "framework": "Next.js App Router",
+      "status": "tested"
     }
   ],
   "variants": [

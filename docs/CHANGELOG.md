@@ -1,5 +1,12 @@
 # Changelog
 
+## Phase 4 — Portable distribution and framework integration
+
+- Added local SHA-256 verified export and clean-target installer with dry-run, compatibility/theme/dependency/path checks, staged writes, rollback, and install report.
+- Export vendors Forma shared UI/theme/utilities and token/UI CSS; strips workspace dependencies, sanitizes Tailwind paths, and records font attribution.
+- Proved Modern Admin independently on React + Vite and Next.js App Router with typechecks, production builds, and browser smoke tests; proved Focus Planner export/install/Vite build.
+- Marked Next.js tested only for Modern Admin. GitHub authenticated fetching, merge installs, Project Generator, release publishing, and automatic publishing remain out of scope.
+
 ## Phase 2 — Template creation and publishing workflow
 
 - Added `pnpm template:new` scaffold CLI, strict metadata/package/path validation, and automatic generated registry/category integration.

@@ -27,8 +27,16 @@ Metadata requires stable ID matching folder/package name, name, description, cat
 - `dependencies` must match runtime/peer dependencies in package manifest. Package version/name must match template metadata and expose `typecheck` and `test` scripts.
 - Paths must remain inside `templates/<id>/`; entry must default-export component. All listed source, design, preview, and test files must exist.
 - Preview sources must be real PNG screenshots captured by `pnpm template:preview -- --id <id>`. Desktop and mobile sources are copied to generated public assets during `pnpm registry:build`.
-- Compatibility uses `tested` only after building/integrating against the named framework. `untested` is required otherwise. React + Vite is tested in this repository; Next.js is not.
+- Compatibility uses `tested` only after independent package installation, typecheck, production build, and browser smoke test against named framework. Results apply per-template; do not infer support from another template. Current evidence is tracked in `docs/FRAMEWORK-COMPATIBILITY.md`.
 - License and attribution must be reviewed for any external code or assets. Prefer original assets. Never imply a license from availability alone.
+
+## Portable distribution
+
+- Export with `pnpm template:export -- --id <id> [--out <new-directory>]`. Bundle includes template source, vendored shared UI/theme/utilities, token and UI styles, sanitized Tailwind/PostCSS config, dependency manifest, metadata, `design.md`, attributions, and SHA-256 file manifest. Workspace imports and Vite globs are rejected/removed.
+- Install with `pnpm template:install -- --id <id> --package <bundle-dir> --framework <react-vite|next-app-router> --target <new-dir> [--variant <id>] [--dry-run]`. Installer validates hashes, paths, dependencies, ID, variant, and tested framework status; stages and rolls back failed writes. Existing targets are always refused. V1 is not a safe merge tool for populated projects.
+- `--experimental` is proof-only escape hatch for untested adapters. Do not publish compatibility as `tested` until independent typecheck, production build, and browser smoke pass.
+- Plus Jakarta Sans loads from Google Fonts and remains a runtime network asset; bundle records SIL Open Font License 1.1 attribution and system fallback. Shared UI behavior and template CSS stay the same across adapters.
+- Local bundle is current distribution path. GitHub fetching remains deferred; future remote refs must be semver release tags or full commit SHA, never branches. No automatic release/publish.
 
 ## Typography, UI, and behavior
 

@@ -17,7 +17,7 @@
   "compatibility": [
     {
       "framework": "React + Vite",
-      "status": "tested"
+      "status": "untested"
     }
   ],
   "variants": [
