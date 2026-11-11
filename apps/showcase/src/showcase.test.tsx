@@ -22,7 +22,7 @@ describe("showcase catalog", () => {
     const user = userEvent.setup();
     render(<App />);
     await user.click(screen.getAllByRole("button", { name: "Components" })[0]);
-    expect(screen.getByRole("heading", { name: "Components" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Components" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Switch to light mode" }));
     expect(document.querySelector("[data-theme=light]")).toBeInTheDocument();
   });

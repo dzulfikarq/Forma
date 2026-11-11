@@ -33,18 +33,21 @@ Check 1366px, 820px, and 375px widths. Verify no horizontal page overflow, visib
 | Check | Result |
 | --- | --- |
 | `pnpm registry:check` | Pass — 3 templates, 7 categories |
-| `pnpm lint` | Pass — 37 source files |
+| `pnpm lint` | Pass — 39 source files |
 | `pnpm typecheck` | Pass — UI, showcase, and all templates |
 | `pnpm test` | Pass — 7 Vitest files / 20 tests; 4 distribution tests |
-| `pnpm build` | Pass — registry and Vite production build; 527.70 kB main chunk warning |
+| `pnpm test:distribution` | Pass — 4 integrity, dependency, path, compatibility, and install tests |
+| `pnpm build` | Pass — registry and Vite production build; main JS 527.70 → 523.77 kB, Components split 4.58 kB (1.57 kB gzip); >500 kB warning remains |
 | `pnpm test:e2e` | Pass — 6 browser tests; 1 preview-generation test skipped |
 
-Modern Admin proof used a local export and clean targets outside the Forma workspace:
+Portable proofs used local exports and clean targets outside the Forma workspace:
 
 | Target | Dependency install | Typecheck | Production build | Browser smoke |
 | --- | --- | --- | --- | --- |
 | React 19 + Vite 7.3.8 | Pass (`pnpm install`, esbuild allowed by generated pnpm config) | Pass | Pass | Pass: font, Violet accent, navigation, custom confirm/create dialogs, 375px overflow/typography |
 | React 19 + Next.js 16.4.6 App Router | Pass | Pass | Pass | Pass on production server: font, Ember accent, navigation, custom confirm/create dialogs, 375px overflow/typography |
 | Focus Planner + React 19/Vite 7.3.8 | Pass | Pass | Pass | Pass: font, Moss accent, task dialog/filter, typography, 375px overflow |
+| Staywise + React 19/Vite 7.3.8 | Pass | Pass | Pass | Pass on production preview: font, Coral accent/dark theme, navigation, logout/create dialogs, 820/375px overflow and typography |
+| Staywise + React 19/Next.js 16.4.6 App Router | Pass | Pass | Pass | Pass on production server: font, Coral accent/dark theme, navigation, logout/create dialogs, 820/375px overflow and typography |
 
-Re-run package checks with `pnpm template:export`, `pnpm template:install`, `node scripts/template-distribution.smoke.mjs <url> ["<H S L accent>"]`, or `node scripts/template-focus-smoke.mjs <url>`. Smoke scripts use Playwright already installed by showcase. Exact versions/status matrix: `docs/FRAMEWORK-COMPATIBILITY.md`. Next adapter proof was installed with `--experimental` while metadata was untested; after build and production browser smoke passed, metadata was marked tested. Focus Planner passed independent Vite install/build/browser smoke. Staywise compatibility is untested for portable distribution. No Project Generator or remote repository was used.
+Re-run package checks with `pnpm template:export`, `pnpm template:install`, `node scripts/template-distribution.smoke.mjs <url> ["<H S L accent>"]`, `node scripts/template-focus-smoke.mjs <url>`, or `node scripts/staywise-distribution.smoke.mjs <url> ["<H S L accent>"]`. Smoke scripts use Playwright already installed by showcase. Exact versions/status matrix: `docs/FRAMEWORK-COMPATIBILITY.md`. Staywise adapter proofs used `--experimental` while metadata was untested; after independent clean-target installs, dependency installs, typechecks, builds, and browser smokes passed, both statuses were marked tested. No Project Generator or remote repository was used.

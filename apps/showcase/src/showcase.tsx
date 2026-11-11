@@ -2,11 +2,9 @@ import * as React from "react";
 import { MotionConfig, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, Check, Command, ExternalLink, Layers3, Maximize2, Moon, Search, Sun, WandSparkles } from "lucide-react";
 import {
-  Badge, Breadcrumb, Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Checkbox,
-  ConfirmDialog, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader,
-  DialogTitle, DialogTrigger, EmptyState, Input, Label, Select, SelectContent, SelectItem,
-  SelectTrigger, SelectValue, Skeleton, Switch, Tabs, TabsContent, TabsList, TabsTrigger,
-  Textarea, Toast, ToastProvider, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
+  Badge, Breadcrumb, Button, Dialog, DialogContent, DialogDescription, DialogFooter,
+  DialogHeader, DialogTitle, DialogTrigger, EmptyState, Input, Label, Select, SelectContent,
+  SelectItem, SelectTrigger, SelectValue, Toast, ToastProvider, TooltipProvider,
   useTheme, ThemeProvider
 } from "@design-templates/ui";
 import { getCategoryName, registry, type Template } from "./registry";
@@ -15,6 +13,7 @@ type View = "gallery" | "detail" | "components";
 type Device = "desktop" | "tablet" | "mobile";
 const modules = import.meta.glob<React.ComponentType>("../../../templates/*/src/entry.tsx", { import: "default" });
 const components = Object.fromEntries(Object.entries(modules).map(([path, load]) => [path.split("/").at(-3), React.lazy(() => load().then((component) => ({ default: component })))]));
+const ComponentShowcase = React.lazy(() => import("./component-showcase").then(({ ComponentShowcase }) => ({ default: ComponentShowcase })));
 
 function hexToHsl(hex: string) {
   const [red, green, blue] = hex.match(/[a-f\d]{2}/gi)!.map((part) => parseInt(part, 16) / 255);
@@ -63,7 +62,7 @@ function Showcase() {
     <main>
       {view === "gallery" && <Gallery query={query} setQuery={setQuery} category={category} setCategory={setCategory} templates={filteredTemplates} openTemplate={openTemplate} />}
       {view === "detail" && activeTemplate && <TemplateDetail template={activeTemplate} device={device} setDevice={setDevice} goBack={backToGallery} notify={(title, description) => setToast({ open: true, title, description })} />}
-      {view === "components" && <ComponentShowcase notify={(title, description) => setToast({ open: true, title, description })} />}
+      {view === "components" && <React.Suspense fallback={<p role="status">Loading components…</p>}><ComponentShowcase notify={(title, description) => setToast({ open: true, title, description })} /></React.Suspense>}
     </main>
     <footer className="showcase-footer"><span>Forma <i>·</i> reusable React templates</span><span>V1 <i>·</i> generated from validated metadata</span></footer>
     <Toast {...toast} onOpenChange={(open) => setToast((current) => ({ ...current, open }))} />
@@ -99,11 +98,3 @@ function PlusIcon() { return <span aria-hidden="true">+</span>; }
 function DesktopIcon() { return <svg viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="1" width="18" height="12" rx="2" /><path d="M7 15h6M10 13v2" /></svg>; }
 function TabletIcon() { return <svg viewBox="0 0 14 18" aria-hidden="true"><rect x="1" y="1" width="12" height="16" rx="2" /><path d="M6 14.5h2" /></svg>; }
 function MobileIcon() { return <svg viewBox="0 0 11 18" aria-hidden="true"><rect x="1" y="1" width="9" height="16" rx="2" /><path d="M4.5 14.5h2" /></svg>; }
-
-function ComponentShowcase({ notify }: { notify: (title: string, description: string) => void }) {
-  const [confirmOpen, setConfirmOpen] = React.useState(false);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [checked, setChecked] = React.useState(true);
-  const [enabled, setEnabled] = React.useState(false);
-  return <div className="component-page"><div className="component-heading"><p className="section-eyebrow">SHARED DESIGN SYSTEM</p><h1>Components</h1><p>Accessible building blocks shared by every template. Change theme or accent from the header.</p></div><Tabs defaultValue="foundations"><TabsList><TabsTrigger value="foundations">Foundations</TabsTrigger><TabsTrigger value="forms">Forms</TabsTrigger><TabsTrigger value="overlays">Overlays</TabsTrigger></TabsList><TabsContent value="foundations" className="component-grid"><Card><CardHeader><CardTitle>Buttons & badges</CardTitle><CardDescription>Consistent variants, disabled and loading state.</CardDescription></CardHeader><CardContent className="component-row"><Button>Primary action</Button><Button variant="secondary">Secondary</Button><Button variant="outline">Outline</Button><Button variant="destructive">Destructive</Button><Button loading>Loading</Button><Badge><Check size={12} />Active</Badge></CardContent></Card><Card><CardHeader><CardTitle>Cards & states</CardTitle><CardDescription>Shared surfaces, skeleton, empty, and error states.</CardDescription></CardHeader><CardContent className="state-demo"><Skeleton className="h-5 w-2/5" /><Skeleton className="h-3 w-4/5" /><div className="component-empty"><EmptyState title="Nothing here yet" description="New items will show up here when you add them." /></div></CardContent></Card><Card><CardHeader><CardTitle>Tooltip & toast</CardTitle><CardDescription>Small contextual help and non-blocking feedback.</CardDescription></CardHeader><CardContent className="component-row"><Tooltip><TooltipTrigger asChild><Button variant="outline">Hover for help</Button></TooltipTrigger><TooltipContent>Keyboard focus works too.</TooltipContent></Tooltip><Button variant="secondary" onClick={() => notify("Saved", "Your preferences were saved for this session.")}>Show toast</Button></CardContent></Card></TabsContent><TabsContent value="forms" className="component-grid"><Card><CardHeader><CardTitle>Form controls</CardTitle><CardDescription>Labels remain at 13px; helper text stays at 12px.</CardDescription></CardHeader><CardContent className="form-showcase"><div><Label htmlFor="demo-input">Input</Label><Input id="demo-input" placeholder="Type something..." /><p className="helper-copy">Helper text uses semantic muted color.</p></div><div><Label htmlFor="demo-textarea">Textarea</Label><Textarea id="demo-textarea" placeholder="Write a note" /></div><div><Label>Select</Label><Select defaultValue="option-one"><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="option-one">Option one</SelectItem><SelectItem value="option-two">Option two</SelectItem></SelectContent></Select></div><label className="check-row"><Checkbox checked={checked} onCheckedChange={(value) => setChecked(value === true)} />Enable email updates</label><label className="check-row"><Switch checked={enabled} onCheckedChange={setEnabled} />Workspace is public</label></CardContent></Card></TabsContent><TabsContent value="overlays" className="component-grid"><Card><CardHeader><CardTitle>Dialogs</CardTitle><CardDescription>Radix handles focus trap, focus return, keyboard navigation, and escape dismissal.</CardDescription></CardHeader><CardContent className="component-row"><Dialog open={dialogOpen} onOpenChange={setDialogOpen}><DialogTrigger asChild><Button variant="outline">Open dialog</Button></DialogTrigger><DialogContent><DialogHeader><DialogTitle>Accessible dialog</DialogTitle><DialogDescription>Escape closes this dialog. Focus returns to trigger.</DialogDescription></DialogHeader><DialogFooter><Button variant="outline" onClick={() => setDialogOpen(false)}>Close</Button></DialogFooter></DialogContent></Dialog><Button variant="destructive" onClick={() => setConfirmOpen(true)}>Show confirm dialog</Button><ConfirmDialog open={confirmOpen} onOpenChange={setConfirmOpen} title="Delete draft?" description="This action removes the local draft. This cannot be undone." confirmLabel="Delete draft" destructive onConfirm={() => notify("Draft deleted", "Local demo action completed.")} /></CardContent></Card></TabsContent></Tabs></div>;
-}

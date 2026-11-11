@@ -102,6 +102,7 @@ test("components page uses shared readable typography", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
   await page.getByRole("button", { name: "Components" }).click();
+  await expect(page.getByRole("heading", { name: "Components" })).toBeVisible();
 
   const metrics = await page.evaluate(() => {
     const fontSize = (selector: string) => Number.parseFloat(getComputedStyle(document.querySelector(selector)!).fontSize);
