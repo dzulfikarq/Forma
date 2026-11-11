@@ -12,13 +12,15 @@ Use Plus Jakarta Sans, served by Google Fonts under SIL Open Font License 1.1, w
 | Page heading | `--font-size-page` | 24px |
 | Section heading | `--font-size-section` | 22px |
 | Card title | `--font-size-card` | 18px |
-| Body and card description | `--font-size-body` | 15px |
+| Body and card description | `--font-size-body` | 14px |
 | Navigation | `--font-size-nav` | 14px |
 | Button and input | `--font-size-button`, `--font-size-input` | 14px |
 | Category and label | `--font-size-category`, `--font-size-label` | 13px |
 | Badge and helper/footer | `--font-size-badge`, `--font-size-helper` | 12px |
 
 Keep UI text at 12px or larger. Pair display text with `--line-height-display`, headings with `--line-height-heading`, and body copy with `--line-height-body`. Prefer the semantic tokens over literal sizes; fix narrow layouts with wrapping and responsive layout before reducing type.
+
+This Compact & Balanced Typography scale is browser-checked at mobile, tablet, and desktop widths. Intentional decorative text below 12px needs `data-type-exempt="decorative"`; never exempt labels or controls.
 
 ## Tokens
 

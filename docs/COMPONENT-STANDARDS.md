@@ -18,9 +18,10 @@ Use semantic colors, not fixed light/dark palette values, for shared controls. `
 
 - Hero: 40–48px desktop, responsive on mobile.
 - Page/section: 24px / 22px; card title: 18px.
-- Body/description: 14–16px (15px default); navigation, buttons, and inputs: 14px.
+- Body/description: 14–16px (14px default); navigation, buttons, and inputs: 14px.
 - Category tabs and labels: 13px; badges and helper/footer: 12–13px.
 - UI text must not fall below 12px. Use shared size/line-height tokens instead of one-off values; reflow or wrap narrow layouts instead of shrinking text.
+- Compact & Balanced Typography is the quality gate: body defaults to 14px, visible UI text stays at least 12px, and responsive layouts reflow without clipping or horizontal page overflow. Mark intentional decorative text with `data-type-exempt="decorative"`; never exempt functional labels.
 - Plus Jakarta Sans is distributed under SIL Open Font License 1.1; fallback remains available when Google Fonts cannot load.
 
 ## States and behavior

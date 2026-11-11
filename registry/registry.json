@@ -33,12 +33,67 @@
       "description": "Personal portfolios and profile pages."
     },
     {
+      "id": "productivity",
+      "name": "Productivity",
+      "description": "Personal planning and focus workflows."
+    },
+    {
       "id": "project-management",
       "name": "Project Management",
       "description": "Planning, task, and team workspaces."
     }
   ],
   "templates": [
+    {
+      "id": "focus-planner",
+      "name": "Focus Planner",
+      "description": "A calm daily planning board with actionable tasks and clear progress states.",
+      "tags": [
+        "focus",
+        "planner"
+      ],
+      "version": "0.1.0",
+      "entry": "templates/focus-planner/src/entry.tsx",
+      "previewGeneration": "playwright",
+      "design": "templates/focus-planner/design.md",
+      "compatibility": [
+        {
+          "framework": "React + Vite",
+          "status": "tested"
+        }
+      ],
+      "variants": [
+        {
+          "id": "coral",
+          "name": "Coral",
+          "accent": "12 76% 54%",
+          "default": true
+        },
+        {
+          "id": "moss",
+          "name": "Moss",
+          "accent": "151 52% 38%",
+          "default": false
+        }
+      ],
+      "dependencies": [
+        "react",
+        "@design-templates/ui"
+      ],
+      "license": {
+        "type": "MIT",
+        "attribution": "Original implementation; no third-party template code or imagery."
+      },
+      "tests": [
+        "templates/focus-planner/src/focus-planner.test.tsx"
+      ],
+      "category": "productivity",
+      "preview": "/previews/focus-planner.png",
+      "previewSource": "templates/focus-planner/previews/preview.png",
+      "previewMobile": "/previews/focus-planner-mobile.png",
+      "previewMobileSource": "templates/focus-planner/previews/preview-mobile.png",
+      "source": "templates/focus-planner"
+    },
     {
       "id": "modern-admin",
       "name": "Modern Admin",
@@ -52,6 +107,7 @@
       ],
       "version": "1.0.0",
       "entry": "templates/modern-admin/src/entry.tsx",
+      "previewGeneration": "playwright",
       "design": "templates/modern-admin/design.md",
       "compatibility": [
         {
@@ -75,6 +131,7 @@
       ],
       "dependencies": [
         "react",
+        "react-dom",
         "@design-templates/ui",
         "@design-templates/utilities",
         "lucide-react",
@@ -88,8 +145,10 @@
         "templates/modern-admin/src/modern-admin.test.tsx"
       ],
       "category": "admin-cms",
-      "preview": "/previews/modern-admin.svg",
-      "previewSource": "templates/modern-admin/preview.svg",
+      "preview": "/previews/modern-admin.png",
+      "previewSource": "templates/modern-admin/previews/preview.png",
+      "previewMobile": "/previews/modern-admin-mobile.png",
+      "previewMobileSource": "templates/modern-admin/previews/preview-mobile.png",
       "source": "templates/modern-admin"
     }
   ]

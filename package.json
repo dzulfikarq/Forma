@@ -7,9 +7,12 @@
   "scripts": {
     "dev": "pnpm --filter @design-templates/showcase dev",
     "build": "pnpm registry:build && pnpm --filter @design-templates/showcase build",
-    "typecheck": "pnpm --filter @design-templates/showcase typecheck && pnpm --filter @design-templates/modern-admin typecheck",
+    "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm registry:check && pnpm --filter @design-templates/showcase test",
     "test:e2e": "pnpm --filter @design-templates/showcase test:e2e",
+    "lint": "node scripts/lint.mjs",
+    "template:new": "node scripts/template-new.mjs",
+    "template:preview": "node apps/showcase/scripts/generate-preview.mjs",
     "registry:build": "node scripts/build-registry.mjs",
     "registry:check": "node scripts/build-registry.mjs --check"
   }

@@ -10,7 +10,9 @@ export type Template = {
   version: string;
   entry: string;
   preview: string;
+  previewMobile: string;
   previewSource: string;
+  previewMobileSource: string;
   design: string;
   compatibility: Array<{ framework: string; status: "tested" | "untested" }>;
   variants: TemplateVariant[];

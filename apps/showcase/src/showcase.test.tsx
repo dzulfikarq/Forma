@@ -7,13 +7,13 @@ describe("showcase catalog", () => {
   it("searches registry templates and opens live responsive preview", async () => {
     const user = userEvent.setup();
     render(<App />);
-    expect(screen.getByRole("heading", { name: "Explore templates 1" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Explore templates 2" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Admin & CMS" }));
     await user.click(screen.getByRole("button", { name: /Modern Admin/ }));
     expect(screen.getByRole("heading", { name: "Modern Admin" })).toBeInTheDocument();
     expect(screen.getByText("Live preview")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "mobile preview" }));
-    expect(screen.getByText(/mobile · 390px/)).toBeInTheDocument();
+    expect(screen.getByText(/mobile · 375px/)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Violet accent" }));
     expect(document.querySelector("[data-theme=dark]")).toHaveStyle({ "--accent": "263 83% 62%" });
   });

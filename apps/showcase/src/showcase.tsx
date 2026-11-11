@@ -29,7 +29,14 @@ function hexToHsl(hex: string) {
 }
 
 export function App() {
+  const params = new URLSearchParams(window.location.search);
+  const previewId = params.get("template-preview");
+  if (previewId) return <ThemeProvider defaultTheme={params.get("theme") === "light" ? "light" : "dark"} defaultAccent={params.get("accent") ?? "24 95% 53%"}><TemplatePreviewRunner templateId={previewId} Preview={components[previewId]} /></ThemeProvider>;
   return <ThemeProvider defaultTheme="dark"><ToastProvider><TooltipProvider><Showcase /></TooltipProvider></ToastProvider></ThemeProvider>;
+}
+
+function TemplatePreviewRunner({ templateId, Preview }: { templateId: string; Preview?: React.LazyExoticComponent<React.ComponentType> }) {
+  return <div className="template-preview-runner" data-template-preview-id={templateId}>{Preview ? <React.Suspense fallback={<p>Loading template preview</p>}><Preview /></React.Suspense> : <p role="alert">Template entry unavailable: {templateId}</p>}</div>;
 }
 
 function Showcase() {
@@ -69,7 +76,7 @@ function Gallery({ query, setQuery, category, setCategory, templates, openTempla
 }
 
 function TemplateCard({ template, index, openTemplate }: { template: Template; index: number; openTemplate: (template: Template) => void }) {
-  return <motion.button className="template-card" onClick={() => openTemplate(template)} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .25, delay: index * .04 }} whileHover={{ y: -4 }}><div className="template-preview"><img src={template.preview} alt={`${template.name} dashboard preview`} loading="lazy" /><span className="preview-hover">Open live preview <ArrowRight size={14} /></span><span className="preview-version">v{template.version}</span></div><div className="template-card-info"><div className="template-card-title"><div><span className="template-category">{getCategoryName(template.category, registry.categories)}</span><h3>{template.name}</h3></div><span className="open-arrow"><ArrowRight size={15} /></span></div><p>{template.description}</p><div className="template-card-bottom"><div className="tag-list">{template.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}</div><span className="variant-count">{template.variants.length} theme{template.variants.length === 1 ? "" : "s"}</span></div></div></motion.button>;
+  return <motion.button className="template-card" data-template-id={template.id} onClick={() => openTemplate(template)} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .25, delay: index * .04 }} whileHover={{ y: -4 }}><div className="template-preview"><img src={template.preview} alt={`${template.name} dashboard preview`} loading="lazy" /><span className="preview-hover">Open live preview <ArrowRight size={14} /></span><span className="preview-version">v{template.version}</span></div><div className="template-card-info"><div className="template-card-title"><div><span className="template-category">{getCategoryName(template.category, registry.categories)}</span><h3>{template.name}</h3></div><span className="open-arrow"><ArrowRight size={15} /></span></div><p>{template.description}</p><div className="template-card-bottom"><div className="tag-list">{template.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}</div><span className="variant-count">{template.variants.length} theme{template.variants.length === 1 ? "" : "s"}</span></div></div></motion.button>;
 }
 
 function TemplateDetail({ template, device, setDevice, goBack, notify }: { template: Template; device: Device; setDevice: (device: Device) => void; goBack: () => void; notify: (title: string, description: string) => void }) {
@@ -78,7 +85,7 @@ function TemplateDetail({ template, device, setDevice, goBack, notify }: { templ
   const [variantId, setVariantId] = React.useState(template.variants.find((variant) => variant.default)?.id ?? template.variants[0]?.id);
   const [previewOpen, setPreviewOpen] = React.useState(false);
   const activeVariant = template.variants.find((variant) => variant.id === variantId) ?? template.variants[0];
-  const width = device === "desktop" ? "100%" : device === "tablet" ? "820px" : "390px";
+  const width = device === "desktop" ? "100%" : device === "tablet" ? "820px" : "375px";
   const deviceSwitcher = <div className="device-switcher" aria-label="Preview viewport">{(["desktop", "tablet", "mobile"] as const).map((option) => <button key={option} className={device === option ? "active" : ""} aria-label={`${option} preview`} aria-pressed={device === option} onClick={() => setDevice(option)} title={`${option} preview`}>{option === "desktop" ? <DesktopIcon /> : option === "tablet" ? <TabletIcon /> : <MobileIcon />}<span>{option}</span></button>)}</div>;
 
   React.useEffect(() => { if (activeVariant) setAccent(activeVariant.accent); }, [activeVariant, setAccent]);

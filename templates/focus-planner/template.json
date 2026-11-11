@@ -1,0 +1,51 @@
+{
+  "id": "focus-planner",
+  "name": "Focus Planner",
+  "description": "A calm daily planning board with actionable tasks and clear progress states.",
+  "category": {
+    "id": "productivity",
+    "name": "Productivity",
+    "description": "Personal planning and focus workflows."
+  },
+  "tags": [
+    "focus",
+    "planner"
+  ],
+  "version": "0.1.0",
+  "entry": "templates/focus-planner/src/entry.tsx",
+  "preview": "templates/focus-planner/previews/preview.png",
+  "previewMobile": "templates/focus-planner/previews/preview-mobile.png",
+  "previewGeneration": "playwright",
+  "design": "templates/focus-planner/design.md",
+  "compatibility": [
+    {
+      "framework": "React + Vite",
+      "status": "tested"
+    }
+  ],
+  "variants": [
+    {
+      "id": "coral",
+      "name": "Coral",
+      "accent": "12 76% 54%",
+      "default": true
+    },
+    {
+      "id": "moss",
+      "name": "Moss",
+      "accent": "151 52% 38%",
+      "default": false
+    }
+  ],
+  "dependencies": [
+    "react",
+    "@design-templates/ui"
+  ],
+  "license": {
+    "type": "MIT",
+    "attribution": "Original implementation; no third-party template code or imagery."
+  },
+  "tests": [
+    "templates/focus-planner/src/focus-planner.test.tsx"
+  ]
+}

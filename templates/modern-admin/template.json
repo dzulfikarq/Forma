@@ -3,17 +3,52 @@
   "name": "Modern Admin",
   "description": "A charcoal operations workspace with live sales insights, order lanes, and a focused settings area.",
   "category": "admin-cms",
-  "tags": ["dashboard", "analytics", "orders", "dark", "operations"],
+  "tags": [
+    "dashboard",
+    "analytics",
+    "orders",
+    "dark",
+    "operations"
+  ],
   "version": "1.0.0",
   "entry": "templates/modern-admin/src/entry.tsx",
-  "preview": "templates/modern-admin/preview.svg",
+  "preview": "templates/modern-admin/previews/preview.png",
+  "previewMobile": "templates/modern-admin/previews/preview-mobile.png",
+  "previewGeneration": "playwright",
   "design": "templates/modern-admin/design.md",
-  "compatibility": [{ "framework": "React + Vite", "status": "tested" }],
-  "variants": [
-    { "id": "ember", "name": "Ember", "accent": "24 95% 53%", "default": true },
-    { "id": "violet", "name": "Violet", "accent": "263 83% 62%", "default": false }
+  "compatibility": [
+    {
+      "framework": "React + Vite",
+      "status": "tested"
+    }
   ],
-  "dependencies": ["react", "@design-templates/ui", "@design-templates/utilities", "lucide-react", "motion"],
-  "license": { "type": "MIT", "attribution": "Original implementation; no third-party template code or imagery." },
-  "tests": ["templates/modern-admin/src/modern-admin.test.tsx"]
+  "variants": [
+    {
+      "id": "ember",
+      "name": "Ember",
+      "accent": "24 95% 53%",
+      "default": true
+    },
+    {
+      "id": "violet",
+      "name": "Violet",
+      "accent": "263 83% 62%",
+      "default": false
+    }
+  ],
+  "dependencies": [
+    "react",
+    "react-dom",
+    "@design-templates/ui",
+    "@design-templates/utilities",
+    "lucide-react",
+    "motion"
+  ],
+  "license": {
+    "type": "MIT",
+    "attribution": "Original implementation; no third-party template code or imagery."
+  },
+  "tests": [
+    "templates/modern-admin/src/modern-admin.test.tsx"
+  ]
 }

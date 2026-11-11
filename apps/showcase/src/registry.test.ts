@@ -1,18 +1,22 @@
 import { describe, expect, it } from "vitest";
-import { buildRegistry, validateMetadata } from "../../../scripts/build-registry.mjs";
+import { buildRegistry, validateMetadata, validatePackageDependencies } from "../../../scripts/build-registry.mjs";
 import { registry } from "./registry";
 
 const validTemplate = {
   id: "new-template", name: "New Template", description: "A template.", category: "new-category", version: "1.0.0",
-  entry: "entry.tsx", preview: "preview.svg", design: "design.md", tags: [],
+  entry: "entry.tsx", preview: "preview.png", previewMobile: "preview-mobile.png", previewGeneration: "playwright", design: "design.md", tags: ["new"],
   compatibility: [{ framework: "React + Vite", status: "tested" }], variants: [{ id: "base", name: "Base", accent: "20 90% 50%", default: true }],
-  dependencies: [], license: { type: "MIT", attribution: "Original" }, tests: ["test.tsx"]
+  dependencies: ["react"], license: { type: "MIT", attribution: "Original" }, tests: ["test.tsx"]
 };
 
 describe("registry metadata", () => {
   it("builds unique category and template records from metadata", () => {
-    expect(registry.templates.map((template) => template.id)).toEqual(["modern-admin"]);
-    expect(registry.categories.map((category) => category.id)).toContain("admin-cms");
+    expect(registry.templates.map((template) => template.id)).toEqual(["focus-planner", "modern-admin"]);
+    expect(registry.categories.map((category) => category.id)).toEqual(expect.arrayContaining(["admin-cms", "productivity"]));
+    expect(registry.templates.find((template) => template.id === "focus-planner")).toMatchObject({
+      category: "productivity", previewMobile: "/previews/focus-planner-mobile.png", previewGeneration: "playwright",
+      dependencies: ["react", "@design-templates/ui"]
+    });
     expect(registry.distribution.immutable).toBe(false);
   });
 
@@ -24,6 +28,19 @@ describe("registry metadata", () => {
     const invalid = { ...validTemplate, variants: [{ id: "same", name: "A", accent: "20 90% 50%", default: true }, { id: "same", name: "B", accent: "20 90% 50%", default: false }] };
     expect(validateMetadata([], [invalid]).join("\n")).toMatch(/unknown category/);
     expect(validateMetadata([{ id: "new-category", name: "New Category", description: "Category for new templates." }], [invalid]).join("\n")).toMatch(/duplicate variant/);
+  });
+
+  it("rejects pending previews and invalid accent values", () => {
+    expect(validateMetadata([{ id: "new-category", name: "New Category", description: "Category for new templates." }], [{ ...validTemplate, previewGeneration: "pending" }]).join("\n")).toMatch(/Playwright/);
+    expect(validateMetadata([{ id: "new-category", name: "New Category", description: "Category for new templates." }], [{ ...validTemplate, variants: [{ ...validTemplate.variants[0], accent: "999 120% 50%" }] }]).join("\n")).toMatch(/invalid or duplicate variant/);
+  });
+
+  it("rejects package dependencies missing from template metadata", () => {
+    const errors = validatePackageDependencies({ id: "sample", version: "1.0.0", dependencies: ["react"] }, {
+      name: "@design-templates/sample", version: "1.0.0", scripts: { typecheck: "tsc", test: "vitest" },
+      dependencies: { react: "*", "undeclared-runtime": "*" }
+    });
+    expect(errors).toContain("sample: undeclared package dependency: undeclared-runtime");
   });
 
   it("pins only semver tags or full commit SHAs", async () => {

@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("gallery, live preview, theme variants, and responsive navigation work", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Explore templates 1" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Explore templates 2" })).toBeVisible();
   await page.getByRole("button", { name: /Modern Admin/ }).click();
   await expect(page.getByRole("heading", { name: "Modern Admin" })).toBeVisible();
   await expect(page.locator(".preview-viewport").getByRole("heading", { name: "Heartwell today" })).toBeVisible();
@@ -18,7 +18,7 @@ test("gallery, live preview, theme variants, and responsive navigation work", as
     };
   });
   expect(detailTypography.heading).toBe(24);
-  expect(detailTypography.description).toBe(15);
+  expect(detailTypography.description).toBe(14);
   expect(detailTypography.metadataLabel).toBe(13);
   expect(detailTypography.metadataValue).toBe(14);
   expect(detailTypography.previewSearch).toBe(14);
@@ -49,10 +49,10 @@ test("gallery, live preview, theme variants, and responsive navigation work", as
   });
   expect(mobileWidths.cards).toBeLessThanOrEqual(mobileWidths.content);
   await page.screenshot({ path: "test-results/modern-admin-mobile.png", fullPage: true });
-  await expect(page.getByText(/mobile · 390px/)).toBeVisible();
+  await expect(page.getByText(/mobile · 375px/)).toBeVisible();
   await page.getByRole("button", { name: "All templates" }).click();
-  await page.setViewportSize({ width: 390, height: 844 });
-  await expect(page.getByRole("heading", { name: "Explore templates 1" })).toBeVisible();
+  await page.setViewportSize({ width: 375, height: 844 });
+  await expect(page.getByRole("heading", { name: "Explore templates 2" })).toBeVisible();
   await page.screenshot({ path: "test-results/showcase-mobile.png", fullPage: true });
 });
 
