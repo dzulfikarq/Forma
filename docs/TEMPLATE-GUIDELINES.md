@@ -3,30 +3,57 @@
 ## Required layout
 
 ```text
-templates/<stable-kebab-id>/
+templates/<stable-id>/
 ├── template.json
 ├── design.md
-├── preview.svg
 ├── package.json
 ├── tsconfig.json
+├── previews/
+│   ├── preview.png
+│   └── preview-mobile.png
 └── src/
     ├── entry.tsx
     ├── <template>.tsx
     └── <template>.test.tsx
 ```
 
-Template metadata requires stable id, name/description, category, tags, version, source entry, preview, design spec, compatibility status, one or more theme variants (exactly one default), dependencies, license + attribution, and tests. Source entry default-exports React component. Use shared UI/tokens; mock data must be identified. Keep template dependencies aligned with imports.
+Start with `pnpm template:new`. Scaffold creates template metadata, design-analysis notes, source entry, shared UI/token starter, package and TypeScript config, and an interaction test. It does not create placeholder screenshots: registry remains invalid until actual desktop/mobile previews are captured from the running implementation.
 
-Categories may be existing IDs from `registry/categories.json`; a new category can be declared inline as `{ "id", "name", "description" }`. The registry builder merges it. Do not hardcode category IDs in showcase.
+## Metadata and category contract
 
-## Compatibility claims
+Metadata requires stable ID matching folder/package name, name, description, category, tags, semver version, source entry, desktop/mobile preview paths, `previewGeneration: "playwright"`, design spec, compatibility status, one or more theme variants (exactly one default), dependencies, license + attribution, and test paths.
 
-Use `tested` only after building/integrating against named framework. Mark other targets `untested`; absence is not implied support. React + Vite is tested in this repository. Next.js and other adapters are not.
+- Category IDs come from `registry/categories.json` or an inline `{ "id", "name", "description" }` object. Registry builder merges inline categories. Showcase must not contain a duplicate template/category catalog.
+- `dependencies` must match runtime/peer dependencies in package manifest. Package version/name must match template metadata and expose `typecheck` and `test` scripts.
+- Paths must remain inside `templates/<id>/`; entry must default-export component. All listed source, design, preview, and test files must exist.
+- Preview sources must be real PNG screenshots captured by `pnpm template:preview -- --id <id>`. Desktop and mobile sources are copied to generated public assets during `pnpm registry:build`.
+- Compatibility uses `tested` only after building/integrating against the named framework. `untested` is required otherwise. React + Vite is tested in this repository; Next.js is not.
+- License and attribution must be reviewed for any external code or assets. Prefer original assets. Never imply a license from availability alone.
 
-## Preview
+## Typography, UI, and behavior
 
-Provide original preview image/SVG or correctly licensed and attributed asset. Keep preview representative of implementation. Showcase derives preview URL from stable template id and generator copies preview to public assets.
+- Compact & Balanced Typography: `--font-size-body` default is 14px; visible UI text must be at least 12px. Use shared Plus Jakarta Sans and semantic typography/line-height tokens.
+- Browser quality gate checks actual rendered font sizes, page/content overflow, and responsive layout at 375px mobile, 820px tablet, and 1366px desktop.
+- Decorative text below 12px is allowed only when explicitly marked `data-type-exempt="decorative"`. Never exempt actionable labels, status, metadata, or help text.
+- Use shared UI components and tokens; responsive content wraps/reflows rather than reducing text. Use accessible custom dialogs with focus management, Escape, and cancel paths.
+- All shown controls must work locally or clearly explain placeholder/mock behavior. No native browser dialogs. Mock data must be labeled; do not imply persistence/API behavior.
 
-## Submission
+## Reference analysis and submission
 
-Run `pnpm registry:build`, `pnpm registry:check`, `pnpm typecheck`, `pnpm test`, `pnpm build`, and `pnpm test:e2e` where browser exists. Do not hand-edit generated registry. For release use immutable tag/SHA; never publish invalid metadata or branch ref.
+Analyze references before implementation. For image/video, record dimensions, representative frames, visible structure, typography, interaction evidence, and unknowns. For websites/repos, inspect relevant routes/code and licenses/attribution. Record observations, source, assumptions, responsive behavior, and deviations in `design.md`. Do not call a result pixel-perfect without measured verification.
+
+Run after adding a template:
+
+```powershell
+pnpm install
+pnpm template:preview -- --id <id>
+pnpm registry:build
+pnpm registry:check
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm test:e2e
+```
+
+Do not hand-edit `registry/registry.json` or generated showcase preview copies. CI runs validation only and does not publish releases. Distribution refs must be semver tags or full commit SHAs, never branches. Repository remains private; do not publish without explicit visibility approval.

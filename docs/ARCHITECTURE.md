@@ -8,9 +8,9 @@ Templates use React source and shared package imports rather than Vite-specific 
 
 ## Registry data flow
 
-`registry/categories.json` and `templates/*/template.json` are source metadata. `scripts/build-registry.mjs` validates uniqueness, category references, variants, license/attribution, compatibility states, required source files, and safe paths. It emits deterministic `registry/registry.json` and copies preview assets to showcase public directory. Vite imports generated registry and discovers template entries with `import.meta.glob`; category filtering has no hardcoded category list.
+`registry/categories.json` and `templates/*/template.json` are source metadata. `scripts/template-new.mjs` scaffolds template files; `apps/showcase/scripts/generate-preview.mjs` loads source entries in a running Vite app and captures desktop/mobile PNGs with Playwright. `scripts/build-registry.mjs` validates metadata, category/variant contracts, package dependency alignment, compatibility, tests, source files, and safe paths. It emits deterministic `registry/registry.json` and copies both previews to the showcase public directory. Vite imports generated registry and discovers entries with `import.meta.glob`; category filtering has no hardcoded catalog.
 
-Registry schema version is explicit. Unpublished local registry uses `ref: null`, `immutable: false`. Release generation accepts only semantic version tags or full SHA; consumers should pin immutable ref. Registry validates source metadata before generation/build. Project Generator contract remains a GitHub-readable JSON file; integration not tested.
+Registry schema version is explicit. Unpublished local registry uses `ref: null`, `immutable: false`. Distribution generation accepts only semantic version tags or full SHA; consumers should pin immutable refs. GitHub Actions validates only and does not publish releases. Repository is private. Project Generator remains untouched.
 
 ## Theme/data flow
 
@@ -22,4 +22,4 @@ Template is imported into showcase and rendered as live React component, not ifr
 
 ## Quality boundaries
 
-Registry contract and template API are stable-ID based; package internals are source-first for V1. No backend, persistence, publish service, server-side rendering, or framework adapters are present.
+Compact & Balanced Typography is browser-checked: body default 14px, visible UI text minimum 12px, and responsive overflow checks at 375/820/1366px. Decorative exceptions require `data-type-exempt="decorative"`. No backend, persistence, publish service, server-side rendering, AI generation, Project Generator integration, or framework adapters are present.

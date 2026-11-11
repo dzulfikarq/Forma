@@ -1,16 +1,53 @@
 # Coding-agent template workflow
 
-Use when user supplies screenshot/image, video, design.md, GitHub repository, or website.
+Use this workflow when a user supplies an image/screenshot, video, `design.md`, website, or source repository. A coding agent performs analysis and implementation; Forma does not provide an integrated AI generation service.
 
-1. Analyze all provided references. For video, sample representative frames; note dimensions, page changes, motion, typography, spacing, interaction evidence, and anything not visible. Don’t infer invisible behavior.
-2. Identify category/template type. Reuse stable category ID or define a new category in template metadata.
-3. Inspect external code/assets, their license, and attribution before reuse. Prefer original implementation. Never copy proprietary UI/assets without permission.
-4. Write `templates/<id>/design.md`: source, observed structure, visual tokens, interactions, responsive assumptions, and known deviations. Do not call a result pixel-perfect unless measured and verified.
-5. Define stable metadata, design tokens, variants, React compatibility claims, dependency list, license attribution, preview source, and tests.
-6. Implement React entry using shared components/tokens. Add accessible loading/error/empty states where relevant. Keep mock data labeled and all visible controls functional; no native browser prompts.
-7. Update source metadata only. Run `pnpm registry:build`; inspect generated registry and preview copy.
-8. Validate at desktop/tablet/mobile widths; test keyboard paths, dialog focus/Escape/cancel, light/dark, accent variants, reduced motion, and key user flows.
-9. Run `pnpm registry:check`, `pnpm typecheck`, `pnpm test`, `pnpm build`, and Playwright when available. Report actual outputs and gaps.
-10. Release only after checks pass. Build registry with immutable semver tag or full commit SHA; do not publish a branch pointer.
+## 1. Analyze references before coding
 
-Do not build an AI image/video-to-code service in V1. Reference analysis is coding-agent development work.
+- Inspect every supplied source. For video, sample representative frames and note resolution, page changes, visible motion, typography, spacing, and interaction evidence. Do not infer behavior not shown.
+- For websites/repos, inspect relevant routes and source structure. Check code, image, font, and icon licenses plus required attribution before reuse. Prefer original implementation; do not copy proprietary UI/assets without permission.
+- Separate observed facts from assumptions and unknowns. Identify category/template type, responsive behavior, key states, and primary user flows.
+- Record source, evidence, visual tokens, interactions, responsive assumptions, license/attribution, and deviations in `templates/<id>/design.md`.
+
+## 2. Scaffold and implement
+
+Start new template work with the CLI. Existing categories use registry IDs; new categories are declared inline and merged during registry build:
+
+```powershell
+pnpm template:new -- --name "Sprint Board" --category project-management `
+  --description "A focused sprint planning workspace." `
+  --variant "blue:Blue:215 75% 48%" --variant "green:Green:145 55% 38%"
+```
+
+- Scaffold creates stable kebab-case ID, `template.json`, `design.md`, package/TypeScript config, shared-token React entry, and a runnable interaction test. Replace the starter UI, not the registry/catalog.
+- Keep template dependencies in sync with `package.json`. Do not duplicate template/category lists in app code; gallery and filters consume generated metadata and discover source entries by glob.
+- Use `@design-templates/ui`, semantic tokens, accessible custom dialogs, keyboard/focus behavior, responsive layout, and working local interactions. No `window.alert`, `window.confirm`, or `window.prompt`. Label mock data and session-only behavior.
+- Compact & Balanced Typography is mandatory: `--font-size-body` defaults to 14px; visible UI text minimum is 12px. Do not shrink text to fit. Reflow/wrap instead. Intentional decorative text may be excluded only with `data-type-exempt="decorative"`; functional labels never qualify.
+- Set compatibility to `untested` until the framework is integrated and tested. React + Vite is the only repository integration currently exercised; never claim Next.js compatibility without a Next.js integration test.
+
+## 3. Generate previews from the running UI
+
+After implementing the component and updating tests/design notes, install workspace changes and capture previews:
+
+```powershell
+pnpm install
+pnpm template:preview -- --id <stable-id>
+pnpm registry:build
+pnpm registry:check
+```
+
+Playwright loads the template entry from the running Vite app and captures desktop (1366px) plus mobile (375px) PNGs using the default variant. The generator updates metadata only after both screenshots exist and pass PNG checks. Do not hand-author, substitute, or reuse unrelated preview artwork. Mobile preview is captured from the responsive implementation, not resized desktop output.
+
+## 4. Validate and prepare distribution
+
+```powershell
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm test:e2e
+```
+
+Registry validation rejects incomplete/pending previews, malformed metadata/variants/categories, path escapes/missing files, missing tests, dependency drift, and entries without a default export. Registry build copies desktop/mobile PNGs and generates catalog/category data; never hand-edit generated files. Browser checks cover live template font sizes, horizontal overflow, responsive layout at 375/820/1366px, gallery flow, variants, and key interactions. Review captured artifacts when browser is available.
+
+Release registry refs must be immutable semver tags or full commit SHAs. CI validates only; no release/publish automation. Repository is private; do not publish externally without explicit visibility approval. Do not modify Project Generator.
