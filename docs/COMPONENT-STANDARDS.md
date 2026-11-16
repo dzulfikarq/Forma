@@ -12,6 +12,13 @@ Import reusable controls from `@design-templates/ui`: Button/loading, Input, Tex
 - Never call native `window.alert`, `window.confirm`, or `window.prompt`.
 - Respect reduced motion; no information conveyed only by color.
 
+## Icons
+
+- Use `lucide-react` icons already installed in the workspace; do not add another icon set for templates.
+- Keep icon strokes consistent (`strokeWidth` around 1.8), with round joins and caps. Use 18–20px for primary navigation and brand/feature glyphs, 16–18px for controls, and 14–16px inline with text. Do not shrink header icons below these sizes to solve spacing; reflow the header instead.
+- Use clear, semantically fitting glyphs. Put feature/brand icons in a consistent 32–40px tinted container with 8–12px radius; leave inline action icons unboxed. Use semantic/accent colors with sufficient contrast.
+- Treat icons beside visible labels as decorative. Icon-only actions need an accessible name and a visible focus state.
+
 ## Tokens and typography
 
 Use semantic colors, not fixed light/dark palette values, for shared controls. `--accent` drives primary/accent surfaces. Use Plus Jakarta Sans via `--font-family-sans` with the system sans fallback. Global type and line-height tokens live in `packages/tokens/src/styles.css`; Tailwind utilities map to the same tokens.

@@ -13,14 +13,15 @@
 .closing-desk *, .closing-desk *::before, .closing-desk *::after { box-sizing: border-box; }
 .closing-desk button, .closing-desk input, .closing-desk textarea { font: inherit; }
 .closing-desk button { color: inherit; }
+.closing-desk svg.lucide { flex-shrink: 0; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .closing-app { width: min(100%, 1320px); min-height: calc(100vh - clamp(24px, 4.4vw, 56px)); margin: 0 auto; padding: 14px clamp(14px, 2.3vw, 30px) 0; overflow: hidden; border: 1px solid hsl(var(--border)); border-radius: 22px; background: hsl(var(--card)); box-shadow: 0 20px 60px -40px hsl(var(--foreground) / .28); }
 .closing-topbar { display: flex; min-height: 52px; align-items: center; justify-content: space-between; gap: 14px; border-bottom: 1px solid hsl(var(--border) / .72); }
 .closing-brand { display: flex; min-width: max-content; align-items: center; gap: 9px; color: hsl(var(--foreground)); font-size: var(--font-size-body); font-weight: var(--font-weight-bold); text-decoration: none; }
-.closing-brand-mark { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 50%; background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
+.closing-brand-mark { display: grid; width: 36px; height: 36px; flex: 0 0 36px; place-items: center; border-radius: 11px; background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
 .closing-desktop-nav { display: flex; max-width: 52%; align-items: center; gap: 2px; padding: 4px; overflow-x: auto; border: 1px solid hsl(var(--border)); border-radius: 999px; }
 .closing-desktop-nav .closing-nav-button { min-height: 34px; padding: 5px 12px; border-radius: 999px; color: hsl(var(--muted-foreground)); font-size: var(--font-size-nav); }
 .closing-desktop-nav .closing-nav-button.is-current { background: hsl(var(--muted)); color: hsl(var(--foreground)); }
-.closing-nav-button svg { flex: 0 0 auto; }
+.closing-nav-button svg { width: 20px; height: 20px; flex: 0 0 20px; }
 .closing-nav-count { display: inline-grid; min-width: 19px; height: 19px; place-items: center; border-radius: 50%; background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); font-size: var(--font-size-badge); font-weight: var(--font-weight-bold); }
 .closing-top-actions { display: flex; min-width: max-content; align-items: center; gap: 5px; }
 .closing-top-actions > .ui-button { min-height: 36px; }
@@ -276,7 +277,7 @@
   .closing-app { min-height: calc(100vh - 10px); padding-inline: 9px; }
   .closing-topbar { gap: 4px; }
   .closing-brand { gap: 6px; font-size: var(--font-size-label); }
-  .closing-brand-mark { width: 27px; height: 27px; }
+  .closing-brand-mark { width: 32px; height: 32px; flex-basis: 32px; border-radius: 10px; }
   .closing-top-actions > .ui-button { width: 32px; min-width: 32px; padding: 0; }
   .closing-page-heading .closing-primary-action { gap: 5px; padding-inline: 9px; }
   .closing-stat-content, .closing-stat-button { gap: 7px; padding: 9px 8px; }

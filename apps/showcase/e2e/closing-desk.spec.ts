@@ -11,6 +11,10 @@ test("Closing Desk appears from registry and supports inbox send/undo responsive
   const preview = page.locator(".preview-stage .preview-viewport");
   const workspace = preview.locator(".closing-desk");
   await expect(workspace.getByRole("heading", { name: "Good morning, Laura" })).toBeVisible();
+  await expect(workspace.locator(".closing-brand-mark")).toHaveCSS("width", "36px");
+  await expect(workspace.locator(".closing-brand-mark svg")).toHaveCSS("width", "20px");
+  await expect(workspace.getByRole("navigation", { name: "Primary navigation" }).getByRole("button", { name: /^Home/ }).locator("svg")).toHaveCSS("width", "20px");
+  await expect(workspace.getByRole("button", { name: "Search workspace" }).locator("svg")).toHaveCSS("width", "18px");
   await workspace.getByRole("button", { name: "Review inbox", exact: true }).click();
   await expect(workspace.getByRole("heading", { name: "Inbox" })).toBeVisible();
   await workspace.getByRole("button", { name: "Send to Sophia" }).click();
@@ -21,6 +25,8 @@ test("Closing Desk appears from registry and supports inbox send/undo responsive
   await page.getByRole("button", { name: "mobile preview" }).click();
   await page.setViewportSize({ width: 375, height: 844 });
   await expect(workspace.getByRole("heading", { name: "Good morning, Laura" })).toBeVisible();
+  await expect(workspace.locator(".closing-brand-mark")).toHaveCSS("width", "32px");
+  await expect(workspace.getByRole("button", { name: "Open workspace navigation" }).locator("svg")).toHaveCSS("width", "18px");
   await workspace.getByRole("button", { name: "Review inbox", exact: true }).click();
   await expect(workspace.getByRole("heading", { name: "Inbox" })).toBeVisible();
   const mobile = await workspace.evaluate((root) => ({

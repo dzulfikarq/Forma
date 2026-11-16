@@ -52,8 +52,8 @@ type InboxItem = {
 };
 
 const navigation: Array<{ id: Page; label: string; icon: React.ReactNode }> = [
-  { id: "Home", label: "Home", icon: <Home size={17} aria-hidden="true" /> },
-  { id: "Inbox", label: "Inbox", icon: <InboxIcon size={17} aria-hidden="true" /> }
+  { id: "Home", label: "Home", icon: <Home size={20} aria-hidden="true" /> },
+  { id: "Inbox", label: "Inbox", icon: <InboxIcon size={20} aria-hidden="true" /> }
 ];
 
 const inboxItems: InboxItem[] = [
@@ -180,7 +180,7 @@ function ClosingWorkspace() {
     <div className="closing-app">
       <header className="closing-topbar">
         <a className="closing-brand" href="#home" onClick={(event) => { event.preventDefault(); setPage("Home"); }} aria-label="Closing Desk home">
-          <span className="closing-brand-mark"><Building2 size={17} aria-hidden="true" /></span>
+          <span className="closing-brand-mark"><Building2 size={20} aria-hidden="true" /></span>
           <span>Closing Desk</span>
         </a>
         <nav className="closing-desktop-nav" aria-label="Primary navigation">
@@ -189,7 +189,7 @@ function ClosingWorkspace() {
           </Button>)}
         </nav>
         <div className="closing-top-actions">
-          <ResponsiveNavigation items={navigation} activeId={page} onSelect={changePage} label="Open workspace navigation" trigger={<Menu size={17} aria-hidden="true" />} />
+          <ResponsiveNavigation items={navigation} activeId={page} onSelect={changePage} label="Open workspace navigation" trigger={<Menu size={18} aria-hidden="true" />} />
           <Button variant="ghost" size="icon" className="closing-icon-button closing-search-trigger" aria-label="Search workspace" onClick={() => { setSearchNotice(""); setSearchOpen(true); }}><Search size={18} aria-hidden="true" /></Button>
           <Button variant="ghost" size="icon" className="closing-icon-button closing-bell" aria-label={`Open inbox notifications, ${needsAttention} items`} onClick={() => openInbox()}>
             <Bell size={18} aria-hidden="true" /><span className="closing-bell-dot" aria-hidden="true" />
