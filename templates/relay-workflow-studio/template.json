@@ -1,0 +1,50 @@
+{
+  "id": "relay-workflow-studio",
+  "name": "Relay Workflow Studio",
+  "description": "A visual automation workspace for building, monitoring, and organizing team workflows.",
+  "category": "project-management",
+  "tags": [
+    "workflow",
+    "automation",
+    "canvas",
+    "integrations"
+  ],
+  "version": "0.1.0",
+  "entry": "templates/relay-workflow-studio/src/entry.tsx",
+  "preview": "templates/relay-workflow-studio/previews/preview.png",
+  "previewMobile": "templates/relay-workflow-studio/previews/preview-mobile.png",
+  "previewGeneration": "playwright",
+  "design": "templates/relay-workflow-studio/design.md",
+  "compatibility": [
+    {
+      "framework": "React + Vite",
+      "status": "untested"
+    }
+  ],
+  "variants": [
+    {
+      "id": "indigo",
+      "name": "Indigo",
+      "accent": "252 68% 54%",
+      "default": true
+    },
+    {
+      "id": "teal",
+      "name": "Teal",
+      "accent": "170 60% 38%",
+      "default": false
+    }
+  ],
+  "dependencies": [
+    "react",
+    "@design-templates/ui",
+    "lucide-react"
+  ],
+  "license": {
+    "type": "MIT",
+    "attribution": "Original Forma implementation, MIT. Accordee video and public documentation used only as analysis references; no Accordee source, branding, screenshots, or design assets redistributed."
+  },
+  "tests": [
+    "templates/relay-workflow-studio/src/relay-workflow-studio.test.tsx"
+  ]
+}
