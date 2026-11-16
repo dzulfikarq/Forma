@@ -1,0 +1,51 @@
+{
+  "id": "groundwork-finance",
+  "name": "Groundwork Finance",
+  "description": "A small-business finance workspace for scheduled payments, bills, cash flow, tax pots, and project budgets.",
+  "category": "admin-cms",
+  "tags": [
+    "finance",
+    "dashboard",
+    "bills",
+    "cash-flow",
+    "small-business"
+  ],
+  "version": "0.1.0",
+  "entry": "templates/groundwork-finance/src/entry.tsx",
+  "preview": "templates/groundwork-finance/previews/preview.png",
+  "previewMobile": "templates/groundwork-finance/previews/preview-mobile.png",
+  "previewGeneration": "playwright",
+  "design": "templates/groundwork-finance/design.md",
+  "compatibility": [
+    {
+      "framework": "React + Vite",
+      "status": "untested"
+    }
+  ],
+  "variants": [
+    {
+      "id": "grove",
+      "name": "Grove",
+      "accent": "105 26% 31%",
+      "default": true
+    },
+    {
+      "id": "olive",
+      "name": "Olive",
+      "accent": "82 33% 32%",
+      "default": false
+    }
+  ],
+  "dependencies": [
+    "react",
+    "@design-templates/ui",
+    "lucide-react"
+  ],
+  "license": {
+    "type": "MIT",
+    "attribution": "Original Forma implementation, MIT. Visual reference only: Tolva, https://demo.codeandchill.store/tolva/ (© 2026 Hasib / OVERSHOOT; all rights reserved, licensed not sold). No reference code, branding, fonts, or assets copied."
+  },
+  "tests": [
+    "templates/groundwork-finance/src/groundwork-finance.test.tsx"
+  ]
+}
