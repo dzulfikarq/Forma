@@ -289,6 +289,40 @@ importers:
 
   packages/utilities: {}
 
+  templates/closing-desk:
+    dependencies:
+      '@design-templates/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      lucide-react:
+        specifier: ^0.468.0
+        version: 0.468.0(react@19.3.1)
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.3.1
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: ^6.9.1
+        version: 6.9.1
+      '@testing-library/react':
+        specifier: ^16.3.0
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@testing-library/user-event':
+        specifier: ^14.6.1
+        version: 14.6.9(@testing-library/dom@10.4.2)
+      '@types/react':
+        specifier: ^19.1.16
+        version: 19.3.0
+      '@types/react-dom':
+        specifier: ^19.1.9
+        version: 19.3.0(@types/react@19.3.0)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(jiti@1.21.7)(jsdom@27.4.0)
+
   templates/focus-planner:
     dependencies:
       '@design-templates/ui':

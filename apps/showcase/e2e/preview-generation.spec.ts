@@ -12,7 +12,7 @@ test("capture desktop and mobile previews from the running template", async ({ p
   await mkdir(outputDirectory, { recursive: true });
   await page.setViewportSize({ width: 1366, height: 1000 });
   const accent = process.env.PREVIEW_ACCENT ?? "24 95% 53%";
-  const query = new URLSearchParams({ "template-preview": templateId, accent, theme: "dark" });
+  const query = new URLSearchParams({ "template-preview": templateId, accent, theme: process.env.PREVIEW_THEME === "light" ? "light" : "dark" });
   await page.goto(`/?${query.toString()}`);
 
   const preview = page.locator(`[data-template-preview-id="${templateId}"]`);

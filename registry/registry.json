@@ -45,6 +45,59 @@
   ],
   "templates": [
     {
+      "id": "closing-desk",
+      "name": "Closing Desk",
+      "description": "A calm operations workspace for tracking property closings, deadlines, and document decisions.",
+      "tags": [
+        "real-estate",
+        "operations",
+        "transactions",
+        "inbox"
+      ],
+      "version": "0.1.0",
+      "entry": "templates/closing-desk/src/entry.tsx",
+      "previewGeneration": "playwright",
+      "design": "templates/closing-desk/design.md",
+      "compatibility": [
+        {
+          "framework": "React + Vite",
+          "status": "untested"
+        }
+      ],
+      "variants": [
+        {
+          "id": "ember",
+          "name": "Ember",
+          "accent": "24 92% 50%",
+          "default": true
+        },
+        {
+          "id": "pine",
+          "name": "Pine",
+          "accent": "158 42% 35%",
+          "default": false
+        }
+      ],
+      "dependencies": [
+        "react",
+        "@design-templates/ui",
+        "lucide-react"
+      ],
+      "license": {
+        "type": "MIT",
+        "attribution": "Original implementation; no third-party template code or imagery."
+      },
+      "tests": [
+        "templates/closing-desk/src/closing-desk.test.tsx"
+      ],
+      "category": "admin-cms",
+      "preview": "/previews/closing-desk.png",
+      "previewSource": "templates/closing-desk/previews/preview.png",
+      "previewMobile": "/previews/closing-desk-mobile.png",
+      "previewMobileSource": "templates/closing-desk/previews/preview-mobile.png",
+      "source": "templates/closing-desk"
+    },
+    {
       "id": "focus-planner",
       "name": "Focus Planner",
       "description": "A calm daily planning board with actionable tasks and clear progress states.",
