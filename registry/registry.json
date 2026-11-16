@@ -149,6 +149,60 @@
       "source": "templates/groundwork-finance"
     },
     {
+      "id": "ledgerline-finance",
+      "name": "Ledgerline Finance",
+      "description": "A personal finance workspace for tracking bills, daily spending, income, savings goals, and budgets.",
+      "tags": [
+        "finance",
+        "budget",
+        "dashboard",
+        "transactions",
+        "savings"
+      ],
+      "version": "0.1.0",
+      "entry": "templates/ledgerline-finance/src/entry.tsx",
+      "previewGeneration": "playwright",
+      "design": "templates/ledgerline-finance/design.md",
+      "compatibility": [
+        {
+          "framework": "React + Vite",
+          "status": "untested"
+        }
+      ],
+      "variants": [
+        {
+          "id": "cobalt",
+          "name": "Cobalt",
+          "accent": "224 82% 55%",
+          "default": true
+        },
+        {
+          "id": "evergreen",
+          "name": "Evergreen",
+          "accent": "148 50% 37%",
+          "default": false
+        }
+      ],
+      "dependencies": [
+        "react",
+        "@design-templates/ui",
+        "lucide-react"
+      ],
+      "license": {
+        "type": "MIT",
+        "attribution": "Original Forma implementation, MIT. Visual reference: user-supplied screenshot; source/license metadata unavailable. No reference branding, code, or imagery copied."
+      },
+      "tests": [
+        "templates/ledgerline-finance/src/ledgerline-finance.test.tsx"
+      ],
+      "category": "admin-cms",
+      "preview": "/previews/ledgerline-finance.png",
+      "previewSource": "templates/ledgerline-finance/previews/preview.png",
+      "previewMobile": "/previews/ledgerline-finance-mobile.png",
+      "previewMobileSource": "templates/ledgerline-finance/previews/preview-mobile.png",
+      "source": "templates/ledgerline-finance"
+    },
+    {
       "id": "modern-admin",
       "name": "Modern Admin",
       "description": "A charcoal operations workspace with live sales insights, order lanes, and a focused settings area.",

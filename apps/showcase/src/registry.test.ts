@@ -11,7 +11,7 @@ const validTemplate = {
 
 describe("registry metadata", () => {
   it("builds unique category and template records from metadata", () => {
-    expect(registry.templates.map((template) => template.id)).toEqual(["focus-planner", "groundwork-finance", "modern-admin", "staywise-host-dashboard"]);
+    expect(registry.templates.map((template) => template.id)).toEqual(["focus-planner", "groundwork-finance", "ledgerline-finance", "modern-admin", "staywise-host-dashboard"]);
     expect(registry.categories.map((category) => category.id)).toEqual(expect.arrayContaining(["admin-cms", "productivity"]));
     expect(registry.templates.find((template) => template.id === "focus-planner")).toMatchObject({
       category: "productivity", previewMobile: "/previews/focus-planner-mobile.png", previewGeneration: "playwright",
