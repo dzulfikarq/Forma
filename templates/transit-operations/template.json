@@ -1,0 +1,51 @@
+{
+  "id": "transit-operations",
+  "name": "Transit Operations",
+  "description": "A logistics dispatch workspace for shipment progress, fleet readiness, cold-chain monitoring, and delivery handoffs.",
+  "category": "admin-cms",
+  "tags": [
+    "logistics",
+    "fleet",
+    "dispatch",
+    "shipments",
+    "cold-chain"
+  ],
+  "version": "0.1.0",
+  "entry": "templates/transit-operations/src/entry.tsx",
+  "preview": "templates/transit-operations/previews/preview.png",
+  "previewMobile": "templates/transit-operations/previews/preview-mobile.png",
+  "previewGeneration": "playwright",
+  "design": "templates/transit-operations/design.md",
+  "compatibility": [
+    {
+      "framework": "React + Vite",
+      "status": "untested"
+    }
+  ],
+  "variants": [
+    {
+      "id": "evergreen",
+      "name": "Evergreen",
+      "accent": "158 52% 36%",
+      "default": true
+    },
+    {
+      "id": "lagoon",
+      "name": "Lagoon",
+      "accent": "174 62% 39%",
+      "default": false
+    }
+  ],
+  "dependencies": [
+    "react",
+    "@design-templates/ui",
+    "lucide-react"
+  ],
+  "license": {
+    "type": "MIT",
+    "attribution": "Original Forma implementation, MIT. User-supplied video used for visual analysis only; source and brand license unknown. No source code, logo, screenshots, or third-party imagery copied."
+  },
+  "tests": [
+    "templates/transit-operations/src/transit-operations.test.tsx"
+  ]
+}

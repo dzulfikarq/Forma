@@ -1,0 +1,21 @@
+# Transit Operations
+
+## Reference analysis
+
+- **Source/evidence:** user-supplied `threadsdownloader.com_d2fe04.mp4`; H.264, 960×720 (4:3), 30 fps, 4.5 seconds. Representative frames sampled at 0.5-second intervals. Screen holds shipment-detail view after a short loading/settling transition. A pointer moves over the active stop; no additional click outcome is unambiguous.
+- **Observed layout:** dark, fixed-width left rail; light operations canvas; horizontal top bar with “Jakarta operations”, live indicator, shipment search, date, alerts, and dispatch action. Main content begins with shipment identity/status, origin-to-destination progress and completion count. Below: tall six-stop timeline and POD tiles on left; four compact metrics, reefer-temperature chart, and cargo manifest on right.
+- **Observed components/states:** dark navy sidebar with depot selector, grouped navigation and delivery-progress/profile footer; white rounded cards with fine borders; mint route/progress accents; completed/current/upcoming timeline markers; status pills; temperature line/area graph and bounded temperature band; cargo rows with quantity, temperature, and load state. Shipment values visibly settle/change during clip. No reliable evidence for behavior of other sidebar destinations.
+- **Typography/spacing/color:** compact sans-serif hierarchy; labels and secondary text are quieter than 14–18px titles/metrics. Video scale makes exact font sizes and color values uncertain. Approximate palette: deep navy rail, warm light-gray canvas, white surfaces, ink text, teal/mint positive accent, muted gray dividers. Rounded cards (about 12–16px) and tight but distinct 8–16px gaps.
+- **Motion/interactions observed:** brief blurred/loading transition at start, followed by stable route details and small metric updates. Pointer hovers/moves over stop list. No confirmed real-time backend, click action, drag behavior, or animation timing. Implementation uses restrained CSS transitions and reduced-motion support; local actions are explicitly sample-only.
+- **Responsive assumptions:** source contains desktop-like layout only. Tablet collapses rail and reflows stop/detail columns; mobile uses shared navigation dialog, two-column compact metrics, single-column cards, scroll-contained manifest, and wrapping header. These are implementation choices, not video evidence.
+- **Category:** `admin-cms` (existing registry category for operations dashboards); no new category needed.
+- **License/attribution:** source product/author and video license are unknown. Video is analysis-only and is not redistributed. Implementation uses original Wayline naming, fictional shipment data, hand-authored SVG/CSS charts/map, shared Forma UI, and installed Lucide icons. No reference logo, code, screenshots, map tiles, font, or third-party image reused.
+
+## Implementation notes
+
+- **Pages:** Shipments (reference-inspired detail), Live map, Fleet, Drivers, Route planner, Fuel & costs, Settings. Unseen destinations are original local-demo views.
+- **Working interactions:** depot selector; route-stop selection/reordering; POD and manifest dialogs; shipment search; dispatch form creating an in-session shipment; date selector; alert navigation; map stop selection; vehicle/driver status controls; route-distance simulation; fuel period/category filters; settings switches and save feedback.
+- **Shared design system:** shared `Button`, `Card`, `Badge`, `Input`, `Label`, `Select`, `Switch`, `DialogContent`, `Toast`, and `ResponsiveNavigation`; semantic typography/color tokens and accessible names/focus states. Body default remains 14px; visible UI text stays ≥12px.
+- **Theme variants:** Evergreen (default) and Lagoon change semantic accent only; light/dark shared themes remain supported.
+- **Persistence:** all records/actions are illustrative local state and reset on reload; no network, GPS, dispatch, driver, telemetry, or document service is connected.
+- **Deviations:** original fictional branding/content replaces source “Lintas” branding/data. Recreated structure and broad visual language only, not proprietary assets. Tablet/mobile routes and extra page content are original improvisations because reference exposes no responsive or alternate-page states.
