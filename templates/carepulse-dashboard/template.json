@@ -1,0 +1,50 @@
+{
+  "id": "carepulse-dashboard",
+  "name": "CarePulse Dashboard",
+  "description": "A remote patient monitoring workspace for care teams, adherence, readings, and referrals.",
+  "category": "admin-cms",
+  "tags": [
+    "healthcare",
+    "remote-monitoring",
+    "patients",
+    "analytics"
+  ],
+  "version": "0.1.0",
+  "entry": "templates/carepulse-dashboard/src/entry.tsx",
+  "preview": "templates/carepulse-dashboard/previews/preview.png",
+  "previewMobile": "templates/carepulse-dashboard/previews/preview-mobile.png",
+  "previewGeneration": "playwright",
+  "design": "templates/carepulse-dashboard/design.md",
+  "compatibility": [
+    {
+      "framework": "React + Vite",
+      "status": "untested"
+    }
+  ],
+  "variants": [
+    {
+      "id": "pine",
+      "name": "Pine",
+      "accent": "164 67% 25%",
+      "default": true
+    },
+    {
+      "id": "lagoon",
+      "name": "Lagoon",
+      "accent": "171 45% 40%",
+      "default": false
+    }
+  ],
+  "dependencies": [
+    "react",
+    "@design-templates/ui",
+    "lucide-react"
+  ],
+  "license": {
+    "type": "MIT",
+    "attribution": "Original implementation; no third-party template code or imagery."
+  },
+  "tests": [
+    "templates/carepulse-dashboard/src/carepulse-dashboard.test.tsx"
+  ]
+}
