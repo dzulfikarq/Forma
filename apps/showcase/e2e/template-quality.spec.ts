@@ -62,6 +62,7 @@ test("running templates meet typography and responsive quality gates", async ({ 
     ]) {
       await page.setViewportSize({ width, height: 1000 });
       await page.getByRole("button", { name: `${device} preview` }).click();
+      await expect(preview.locator(".preview-missing")).toHaveCount(0);
       const metrics = await page.evaluate(() => {
         const root = document.querySelector<HTMLElement>(".preview-stage .preview-viewport > *")!;
         const exempt = '[data-type-exempt="decorative"]';

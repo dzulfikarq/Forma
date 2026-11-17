@@ -1,0 +1,50 @@
+{
+  "id": "aster-finance",
+  "name": "Aster Finance",
+  "description": "A polished finance SaaS landing page with product storytelling, plans, and customer resources.",
+  "category": "landing-page",
+  "tags": [
+    "finance",
+    "landing-page",
+    "savings",
+    "saas"
+  ],
+  "version": "0.1.0",
+  "entry": "templates/aster-finance/src/entry.tsx",
+  "preview": "templates/aster-finance/previews/preview.png",
+  "previewMobile": "templates/aster-finance/previews/preview-mobile.png",
+  "previewGeneration": "playwright",
+  "design": "templates/aster-finance/design.md",
+  "compatibility": [
+    {
+      "framework": "React + Vite",
+      "status": "untested"
+    }
+  ],
+  "variants": [
+    {
+      "id": "blue",
+      "name": "Blue",
+      "accent": "224 82% 56%",
+      "default": true
+    },
+    {
+      "id": "violet",
+      "name": "Violet",
+      "accent": "254 72% 58%",
+      "default": false
+    }
+  ],
+  "dependencies": [
+    "react",
+    "@design-templates/ui",
+    "lucide-react"
+  ],
+  "license": {
+    "type": "MIT",
+    "attribution": "Original Aster implementation and CSS illustrations; no third-party template code, brand, or imagery copied."
+  },
+  "tests": [
+    "templates/aster-finance/src/aster-finance.test.tsx"
+  ]
+}
