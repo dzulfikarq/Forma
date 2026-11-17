@@ -40,3 +40,17 @@ test("Closing Desk appears from registry and supports inbox send/undo responsive
   expect(mobile.contentWidth).toBeLessThanOrEqual(mobile.width);
   expect(mobile.documentWidth).toBeLessThanOrEqual(mobile.viewportWidth);
 });
+
+test("Closing Desk uses responsive navigation at tablet width", async ({ page }) => {
+  await page.setViewportSize({ width: 820, height: 900 });
+  await page.goto("/?template-preview=closing-desk&theme=light");
+  const workspace = page.locator(".closing-desk");
+  await expect(workspace.getByRole("heading", { name: "Good morning, Laura" })).toBeVisible();
+  await expect(workspace.getByRole("navigation", { name: "Primary navigation" })).toBeHidden();
+  await workspace.getByRole("button", { name: "Open workspace navigation" }).click();
+  const navigation = page.getByRole("dialog", { name: "Navigation" });
+  await expect(navigation).toBeVisible();
+  await navigation.getByRole("button", { name: "Calendar" }).click();
+  await expect(workspace.getByRole("heading", { name: "Calendar" })).toBeVisible();
+  await expect(page.locator("html")).toHaveJSProperty("scrollWidth", 820);
+});
