@@ -104,6 +104,14 @@ test("premium gallery and detail keep light/dark surfaces and responsive control
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await expect(page.getByRole("group", { name: "Filter by category" })).toBeVisible();
+  const headerIconMetrics = await page.locator(".header-theme, .github-link").evaluateAll((controls) => controls.map((control) => ({
+    control: [control.getBoundingClientRect().width, control.getBoundingClientRect().height],
+    icon: [getComputedStyle(control.querySelector("svg")!).width, getComputedStyle(control.querySelector("svg")!).height],
+  })));
+  expect(headerIconMetrics).toEqual([
+    { control: [40, 40], icon: ["18px", "18px"] },
+    { control: [40, 40], icon: ["18px", "18px"] },
+  ]);
 
   for (const width of [375, 820, 1366, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -121,6 +129,29 @@ test("premium gallery and detail keep light/dark surfaces and responsive control
   await expect(page.locator(".preview-viewport .aster-finance")).toBeVisible();
   await expect(page.locator(".detail-sidebar")).toBeVisible();
   await page.mouse.move(0, 0);
+  const detailButtonIconAlignment = await page.locator(".detail-theme-control .ui-button, .detail-share").evaluateAll((controls) => controls.map((control) => {
+    const style = getComputedStyle(control);
+    const icon = control.querySelector("svg")!.getBoundingClientRect();
+    const bounds = control.getBoundingClientRect();
+    return {
+      alignItems: style.alignItems,
+      justifyContent: style.justifyContent,
+      iconCenterY: Math.abs(icon.top + icon.height / 2 - (bounds.top + bounds.height / 2)),
+    };
+  }));
+  const customAccentIconAlignment = await page.locator(".custom-accent").evaluate((control) => {
+    const style = getComputedStyle(control);
+    const icon = control.querySelector("svg")!.getBoundingClientRect();
+    const bounds = control.getBoundingClientRect();
+    return { display: style.display, placeItems: style.placeItems, iconCenterY: Math.abs(icon.top + icon.height / 2 - (bounds.top + bounds.height / 2)) };
+  });
+  expect(detailButtonIconAlignment).toMatchObject([
+    { alignItems: "center", justifyContent: "center" },
+    { alignItems: "center", justifyContent: "center" },
+  ]);
+  expect(detailButtonIconAlignment.every((item) => item.iconCenterY < 1)).toBe(true);
+  expect(customAccentIconAlignment).toMatchObject({ display: "grid", placeItems: "center" });
+  expect(customAccentIconAlignment.iconCenterY).toBeLessThan(1);
   const detailButtonContrast = () => page.locator(".detail-share").evaluate((button) => {
     const luminance = (color: string) => {
       const channels = color.match(/[\d.]+/g)!.slice(0, 3).map((channel) => Number(channel) / 255);

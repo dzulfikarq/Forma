@@ -1,6 +1,6 @@
 import * as React from "react";
 import { MotionConfig, motion } from "motion/react";
-import { ArrowLeft, ArrowRight, Check, Code2, Command, ExternalLink, Layers3, LayoutGrid, Maximize2, Moon, Search, Sun, WandSparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Code2, Command, ExternalLink, Layers3, LayoutGrid, Maximize2, Moon, Plus, Search, Sun, WandSparkles } from "lucide-react";
 import {
   Badge, Breadcrumb, Button, Dialog, DialogContent, DialogDescription, DialogFooter,
   DialogHeader, DialogTitle, DialogTrigger, EmptyState, Input, Label, Select, SelectContent,
@@ -69,7 +69,7 @@ function Showcase() {
   function backToGallery() { setView("gallery"); setActiveTemplateId(null); }
 
   return <MotionConfig reducedMotion="user"><div className="showcase-shell min-h-screen bg-background text-foreground">
-    <header className="showcase-header"><button className="showcase-brand" onClick={backToGallery} aria-label="Forma home"><span className="showcase-logo"><Layers3 size={17} /></span><span>forma<span className="brand-period">.</span><small>DESIGN TEMPLATES</small></span></button><nav className="header-links"><button className={view === "gallery" || view === "detail" ? "selected" : ""} onClick={backToGallery}>Templates <span>{registry.templates.length.toString().padStart(2, "0")}</span></button><button className={view === "components" ? "selected" : ""} onClick={() => setView("components")}>Components</button></nav><div className="header-right"><span className="registry-status"><i />{registry.distribution.immutable ? registry.distribution.ref : "Local registry"}</span><Button className="header-theme" variant="ghost" size="icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} onClick={toggleTheme}>{theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}</Button><a className="github-link" href={registry.distribution.repository} target="_blank" rel="noreferrer" aria-label="Open repository on GitHub"><ExternalLink size={15} /></a></div></header>
+    <header className="showcase-header"><button className="showcase-brand" onClick={backToGallery} aria-label="Forma home"><span className="showcase-logo"><Layers3 size={17} /></span><span>forma<span className="brand-period">.</span><small>DESIGN TEMPLATES</small></span></button><nav className="header-links"><button className={view === "gallery" || view === "detail" ? "selected" : ""} onClick={backToGallery}>Templates <span>{registry.templates.length.toString().padStart(2, "0")}</span></button><button className={view === "components" ? "selected" : ""} onClick={() => setView("components")}>Components</button></nav><div className="header-right"><span className="registry-status"><i />{registry.distribution.immutable ? registry.distribution.ref : "Local registry"}</span><Button className="header-theme" variant="ghost" size="icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} onClick={toggleTheme}>{theme === "dark" ? <Sun size={18} strokeWidth={1.8} /> : <Moon size={18} strokeWidth={1.8} />}</Button><a className="github-link" href={registry.distribution.repository} target="_blank" rel="noreferrer" aria-label="Open repository on GitHub"><ExternalLink size={18} strokeWidth={1.8} /></a></div></header>
     <main>
       {view === "gallery" && <Gallery query={query} setQuery={setQuery} searchRef={searchRef} category={category} setCategory={setCategory} templates={filteredTemplates} openTemplate={openTemplate} />}
       {view === "detail" && activeTemplate && <TemplateDetail template={activeTemplate} device={device} setDevice={setDevice} goBack={backToGallery} notify={(title, description) => setToast({ open: true, title, description })} />}
@@ -136,7 +136,7 @@ function TemplateDetail({ template, device, setDevice, goBack, notify }: { templ
   </div>;
 }
 
-function PlusIcon() { return <span aria-hidden="true">+</span>; }
+function PlusIcon() { return <span aria-hidden="true"><Plus size={16} strokeWidth={1.8} /></span>; }
 function DesktopIcon() { return <svg viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="1" width="18" height="12" rx="2" /><path d="M7 15h6M10 13v2" /></svg>; }
 function TabletIcon() { return <svg viewBox="0 0 14 18" aria-hidden="true"><rect x="1" y="1" width="12" height="16" rx="2" /><path d="M6 14.5h2" /></svg>; }
 function MobileIcon() { return <svg viewBox="0 0 11 18" aria-hidden="true"><rect x="1" y="1" width="9" height="16" rx="2" /><path d="M4.5 14.5h2" /></svg>; }
