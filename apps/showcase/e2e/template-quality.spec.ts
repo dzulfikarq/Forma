@@ -16,6 +16,9 @@ test("Focus Planner appears from metadata and keeps its theme and interaction fu
   await page.getByRole("combobox", { name: "Theme variant" }).click();
   await page.getByRole("option", { name: "Moss" }).click();
   await expect(page.locator("html")).toHaveAttribute("style", /--accent: 151 52% 38%/);
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await page.getByRole("button", { name: "Switch to dark mode" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page.getByRole("button", { name: "Switch to light mode" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 
