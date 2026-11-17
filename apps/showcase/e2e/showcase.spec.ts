@@ -4,6 +4,8 @@ test("gallery, live preview, theme variants, and responsive navigation work", as
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
   await expect(page.getByRole("heading", { name: /^Explore templates/ })).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect(page.locator(".registry-summary")).toBeVisible();
   await page.getByRole("button", { name: /Modern Admin/ }).click();
   await expect(page.getByRole("heading", { name: "Modern Admin" })).toBeVisible();
   await expect(page.locator(".preview-viewport").getByRole("heading", { name: "Heartwell today" })).toBeVisible();
@@ -17,7 +19,7 @@ test("gallery, live preview, theme variants, and responsive navigation work", as
       previewSearch: fontSize(".preview-viewport .global-search input"),
     };
   });
-  expect(detailTypography.heading).toBe(24);
+  expect(detailTypography.heading).toBe(25);
   expect(detailTypography.description).toBe(14);
   expect(detailTypography.metadataLabel).toBe(13);
   expect(detailTypography.metadataValue).toBe(14);
@@ -95,6 +97,56 @@ test("typography and gallery layout stay readable at target widths", async ({ pa
     expect(cardShare).toBeGreaterThan(1 / columns - 0.05);
     expect(cardShare).toBeLessThan(1 / columns + 0.02);
     await page.screenshot({ path: `test-results/showcase-${width}.png`, fullPage: true });
+  }
+});
+
+test("premium gallery and detail keep light/dark surfaces and responsive controls", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect(page.getByRole("group", { name: "Filter by category" })).toBeVisible();
+
+  for (const width of [375, 820, 1366, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    const gridColumns = await page.locator(".template-grid").evaluate((grid) => getComputedStyle(grid).gridTemplateColumns.split(" ").length);
+    expect(gridColumns).toBe(width <= 640 ? 1 : width <= 1100 ? 2 : 3);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
+    expect(overflow, `gallery overflow at ${width}px`).toBe(false);
+  }
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.getByRole("button", { name: "Switch to dark mode" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.getByRole("button", { name: "Switch to light mode" }).click();
+  await page.locator('[data-template-id="aster-finance"]').click();
+  await expect(page.locator(".preview-viewport .aster-finance")).toBeVisible();
+  await expect(page.locator(".detail-sidebar")).toBeVisible();
+  await page.mouse.move(0, 0);
+  const detailButtonContrast = () => page.locator(".detail-share").evaluate((button) => {
+    const luminance = (color: string) => {
+      const channels = color.match(/[\d.]+/g)!.slice(0, 3).map((channel) => Number(channel) / 255);
+      const [red, green, blue] = channels.map((channel) => channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4);
+      return .2126 * red + .7152 * green + .0722 * blue;
+    };
+    const style = getComputedStyle(button);
+    const foreground = luminance(style.color);
+    const background = luminance(style.backgroundColor);
+    return (Math.max(foreground, background) + .05) / (Math.min(foreground, background) + .05);
+  });
+  expect(await detailButtonContrast()).toBeGreaterThanOrEqual(4.5);
+  const outlineSurfaces = await page.locator(".detail-theme-control .ui-button, .preview-expand").evaluateAll((buttons) => buttons.map((button) => getComputedStyle(button).backgroundColor));
+  expect(outlineSurfaces.every((surface) => surface !== "rgba(0, 0, 0, 0)")).toBe(true);
+  await page.getByRole("button", { name: "Switch to dark mode" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  expect(await detailButtonContrast()).toBeGreaterThanOrEqual(4.5);
+  const darkOutlineSurfaces = await page.locator(".detail-theme-control .ui-button, .preview-expand").evaluateAll((buttons) => buttons.map((button) => getComputedStyle(button).backgroundColor));
+  expect(darkOutlineSurfaces.every((surface) => surface !== "rgba(0, 0, 0, 0)")).toBe(true);
+  expect(darkOutlineSurfaces).not.toEqual(outlineSurfaces);
+
+  for (const width of [375, 820, 1366, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
+    expect(overflow, `detail overflow at ${width}px`).toBe(false);
+    await expect(page.getByRole("button", { name: "Open large preview" })).toBeVisible();
   }
 });
 
