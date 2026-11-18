@@ -423,6 +423,59 @@
       "source": "templates/modern-admin"
     },
     {
+      "id": "pulih-clinic-workspace",
+      "name": "Pulih Clinic Workspace",
+      "description": "A calm clinic workspace for daily scheduling, patient records, lab results, and care notes.",
+      "tags": [
+        "healthcare",
+        "clinic",
+        "patients",
+        "appointments"
+      ],
+      "version": "0.1.0",
+      "entry": "templates/pulih-clinic-workspace/src/entry.tsx",
+      "previewGeneration": "playwright",
+      "design": "templates/pulih-clinic-workspace/design.md",
+      "compatibility": [
+        {
+          "framework": "React + Vite",
+          "status": "untested"
+        }
+      ],
+      "variants": [
+        {
+          "id": "teal",
+          "name": "Teal",
+          "accent": "188 92% 37%",
+          "default": true
+        },
+        {
+          "id": "lagoon",
+          "name": "Lagoon",
+          "accent": "197 86% 43%",
+          "default": false
+        }
+      ],
+      "dependencies": [
+        "react",
+        "@design-templates/ui",
+        "lucide-react"
+      ],
+      "license": {
+        "type": "MIT",
+        "attribution": "Original implementation; no third-party template code or imagery."
+      },
+      "tests": [
+        "templates/pulih-clinic-workspace/src/pulih-clinic-workspace.test.tsx"
+      ],
+      "category": "admin-cms",
+      "preview": "/previews/pulih-clinic-workspace.png",
+      "previewSource": "templates/pulih-clinic-workspace/previews/preview.png",
+      "previewMobile": "/previews/pulih-clinic-workspace-mobile.png",
+      "previewMobileSource": "templates/pulih-clinic-workspace/previews/preview-mobile.png",
+      "source": "templates/pulih-clinic-workspace"
+    },
+    {
       "id": "relay-workflow-studio",
       "name": "Relay Workflow Studio",
       "description": "A visual automation workspace for building, monitoring, and organizing team workflows.",
